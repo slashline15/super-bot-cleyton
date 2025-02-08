@@ -1,0 +1,54 @@
+# Ambiente virtual
+venv/
+
+# Credenciais e configurações
+credentials/
+.env
+.env.*
+credentials/*
+src\bot\google_auth_helper\auth.py
+
+# Cache e arquivos compilados
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+temp/
+
+# Arquivos de desenvolvimento
+*.egg-info/
+dist/
+build/
+desjtop.ini
+data/controle_financeiro/
+data/ideias/
+data/docs/tree-histories/
+
+
+# Banco de dados
+data/*.db
+engenharia_bot.db
+*.db
+*.sqlite3
+
+# IDEs e editores
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# memória
+test_chroma_db/
+temp/
+*.pyc
+pycache/
+chroma_db/
+database/
+
+
+provessors/
+tests/
+utils/
+desktop.ini
