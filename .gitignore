@@ -35,6 +35,7 @@ database/
 # Arquivos de sistema
 desktop.ini
 .DS_Store
+.git/
 
 # Dados sensíveis ou muito grandes
 data/controle_financeiro/
