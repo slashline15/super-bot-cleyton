@@ -1,37 +1,30 @@
 # Ambiente virtual
 venv/
-
-# Credenciais e configurações
-credentials/
-.env
-.env.*
-credentials/*
-src\bot\google_auth_helper\auth.py
-
-# Cache e arquivos compilados
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
 .Python
-*.so
-temp/
 
-# Arquivos de desenvolvimento
+# Arquivos de desenvolvimento Python
+__pycache__/
+*.py[cod]       # Pega *.pyc, *.pyo e *.pyd
+*.so
 *.egg-info/
 dist/
 build/
-desjtop.ini
-data/controle_financeiro/
-data/ideias/
-data/docs/tree-histories/
 
+# Credenciais e configurações sensíveis
+credentials/*
+!credentials/.gitkeep
+.env
+.env.*
 
-# Banco de dados
-data/*.db
-engenharia_bot.db
+# Bancos de dados e memória
 *.db
 *.sqlite3
+chroma_db/
+test_chroma_db/
+
+# Arquivos temporários e cache
+temp/
+database/
 
 # IDEs e editores
 .vscode/
@@ -39,16 +32,11 @@ engenharia_bot.db
 *.swp
 *.swo
 
-# memória
-test_chroma_db/
-temp/
-*.pyc
-pycache/
-chroma_db/
-database/
-
-
-provessors/
-tests/
-utils/
+# Arquivos de sistema
 desktop.ini
+.DS_Store
+
+# Dados sensíveis ou muito grandes
+data/controle_financeiro/
+data/ideias/
+data/docs/tree-histories/
