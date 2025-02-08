@@ -41,3 +41,7 @@ desktop.ini
 data/controle_financeiro/
 data/ideias/
 data/docs/tree-histories/
+
+# logs e arquivos temporários
+*.logs
+*.tmp
