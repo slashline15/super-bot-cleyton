@@ -64,7 +64,7 @@ def init_google_auth():
         raise
 
     # Obtém as credenciais
-    credentials = setup_google_auth()
+    credentials = init_google_auth()
     
     # Exemplo de uso com Google Sheets
     from googleapiclient.discovery import build
@@ -91,7 +91,17 @@ def main():
         return
 
     application = Application.builder().token(telegram_token).build()
+    # # Handler para comando /start
+    # application.add_handler(CommandHandler("start", telegram_llm_handler.handle_start))
     
+    # # Handler para comando /help
+    # application.add_handler(CommandHandler("help", telegram_llm_handler.handle_help))
+    
+    # # Handler para comando /limpar
+    # application.add_handler(CommandHandler("limpar", telegram_llm_handler.handle_limpar))
+    
+    # # Handler para erros
+    # application.add_error_handler(telegram_llm_handler.handle_error)
     # Handler para comando /memoria
     application.add_handler(CommandHandler("memoria", telegram_llm_handler.handle_memoria))
     

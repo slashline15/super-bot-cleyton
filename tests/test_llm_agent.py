@@ -12,7 +12,7 @@ logging.basicConfig(level=logging.INFO)
 src_path = Path(__file__).parent.parent / 'src'
 sys.path.append(str(src_path))
 
-from bot.agents.llm_agent import LLMAgent
+from src.bot.agents.llm_agent import LLMAgent
 
 async def test_llm_agent():
     """Testa a integração do LLMAgent com MemoryManager"""
@@ -47,6 +47,12 @@ async def test_llm_agent():
         # Testa estatísticas da memória
         print("\n📊 Testando estatísticas da memória...")
         stats = await agent.get_memory_stats(user_id, chat_id)
+        
+        # Verifica se retornou um dicionário válido
+        assert isinstance(stats, dict), "Stats deve ser um dicionário"
+        assert "categories" in stats, "Stats deve ter a chave 'categories'"
+        assert "total_messages" in stats, "Stats deve ter a chave 'total_messages'"
+        
         print(f"✓ Estatísticas obtidas: {stats}")
         
         return True

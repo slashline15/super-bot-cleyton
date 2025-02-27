@@ -1,8 +1,16 @@
 """
-gemini_config.py
+Módulo principal do Gemini.
 
-Módulo de configuração para o cliente Gemini.
-Permite configurar e validar parâmetros antes de iniciar a sessão.
+Este módulo fornece a interface principal para interação com o modelo Gemini,
+incluindo configuração e gerenciamento de sessões.
+
+Note:
+    Este módulo está sendo substituído por config.py e client.py para melhor
+    organização. Considere usar essas alternativas.
+
+Example:
+    >>> from bot.agents.gemini import GeminiConfig
+    >>> config = GeminiConfig(temperature=0.7)
 """
 
 from dataclasses import dataclass

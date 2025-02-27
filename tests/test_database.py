@@ -1,93 +1,88 @@
+# tests/test_database.py
 import sqlite3
 import datetime
-from dotenv import load_dotenv
 import os
+import logging
+from dotenv import load_dotenv
+
+# Importa a classe Database para inicializar as tabelas
+from src.bot.database.db_init import Database
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 def test_database():
     print("\n🔄 Iniciando testes do banco de dados...\n")
     
+    test_db = 'test_database.db'
     try:
-        # Conecta ao banco de dados
-        conn = sqlite3.connect('engenharia_bot.db')
+        # Primeiro inicializa o banco com a estrutura correta
+        db = Database(db_name=test_db)
+        print("✓ Banco de dados inicializado")
+        
+        # Agora conecta para os testes
+        conn = sqlite3.connect(test_db)
         cursor = conn.cursor()
         
-        # 1. Teste de inserção de usuário
-        print("1️⃣ Testando inserção de usuário...")
+        # 1. Testa inserção na tabela messages
+        print("\n1️⃣ Testando mensagens...")
         cursor.execute('''
-            INSERT OR IGNORE INTO usuarios (telegram_id, nome)
-            VALUES (123456, 'Usuário Teste')
-        ''')
-        
-        # 2. Teste de inserção no diário de obra
-        print("2️⃣ Testando inserção no diário de obra...")
-        cursor.execute('''
-            INSERT INTO diario_obra (telegram_id, data, descricao, clima, efetivo, fotos)
+            INSERT INTO messages 
+            (user_id, role, content, chat_id, category, importance) 
             VALUES (?, ?, ?, ?, ?, ?)
         ''', (
             123456,
-            datetime.date.today().isoformat(),
-            'Teste de fundação concluído',
-            'Ensolarado',
-            10,
-            'foto1.jpg,foto2.jpg'
+            'user',
+            'Teste de mensagem',
+            789,
+            'diario_obra',
+            3
         ))
+        print("✓ Mensagem inserida")
         
-        # 3. Teste de inserção financeira
-        print("3️⃣ Testando inserção financeira...")
+        # 2. Testa inserção na tabela documents
+        print("\n2️⃣ Testando documentos...")
         cursor.execute('''
-            INSERT INTO financeiro (telegram_id, data, tipo, categoria, valor, descricao)
-            VALUES (?, ?, ?, ?, ?, ?)
+            INSERT INTO documents 
+            (doc_id, title, doc_type, total_chunks, metadata) 
+            VALUES (?, ?, ?, ?, ?)
         ''', (
-            123456,
-            datetime.date.today().isoformat(),
-            'despesa',
-            'material',
-            1500.50,
-            'Compra de cimento'
+            'doc_123',
+            'Documento de Teste',
+            'text',
+            3,
+            '{"author": "Test User"}'
         ))
+        print("✓ Documento inserido")
         
         # Commit das alterações
         conn.commit()
         
-        # 4. Teste de consultas
+        # 3. Testa consultas
         print("\n📊 Testando consultas...")
         
-        # Consulta usuário
-        cursor.execute('SELECT * FROM usuarios WHERE telegram_id = 123456')
-        usuario = cursor.fetchone()
-        print(f"\nUsuário encontrado: {usuario}")
+        # Consulta mensagens
+        cursor.execute('SELECT * FROM messages WHERE user_id = 123456')
+        messages = cursor.fetchone()
+        print(f"Mensagem encontrada: {messages}")
         
-        # Consulta diário
-        cursor.execute('SELECT * FROM diario_obra WHERE telegram_id = 123456')
-        diario = cursor.fetchone()
-        print(f"\nDiário encontrado: {diario}")
+        # Consulta documentos
+        cursor.execute('SELECT * FROM documents WHERE doc_id = "doc_123"')
+        document = cursor.fetchone()
+        print(f"Documento encontrado: {document}")
         
-        # Consulta financeiro
-        cursor.execute('SELECT * FROM financeiro WHERE telegram_id = 123456')
-        financeiro = cursor.fetchone()
-        print(f"\nRegistro financeiro encontrado: {financeiro}")
-        
-        # 5. Teste de atualização
+        # 4. Testa atualizações
         print("\n🔄 Testando atualizações...")
         cursor.execute('''
-            UPDATE diario_obra 
-            SET descricao = 'Teste de fundação concluído - Atualizado'
-            WHERE telegram_id = 123456
+            UPDATE messages 
+            SET content = 'Mensagem atualizada'
+            WHERE user_id = 123456
         ''')
         
         # Verifica atualização
-        cursor.execute('SELECT descricao FROM diario_obra WHERE telegram_id = 123456')
-        descricao_atualizada = cursor.fetchone()[0]
-        print(f"\nDescrição atualizada: {descricao_atualizada}")
-        
-        # 6. Teste de remoção
-        print("\n🗑️ Testando remoção...")
-        cursor.execute('DELETE FROM financeiro WHERE telegram_id = 123456')
-        
-        # Verifica remoção
-        cursor.execute('SELECT * FROM financeiro WHERE telegram_id = 123456')
-        registro_removido = cursor.fetchone()
-        print(f"Registro financeiro após remoção: {registro_removido}")
+        cursor.execute('SELECT content FROM messages WHERE user_id = 123456')
+        content_updated = cursor.fetchone()[0]
+        print(f"Conteúdo atualizado: {content_updated}")
         
         conn.commit()
         print("\n✅ Todos os testes concluídos com sucesso!")
@@ -96,7 +91,14 @@ def test_database():
         print(f"\n❌ Erro durante os testes: {str(e)}")
         
     finally:
-        conn.close()
+        # Fecha conexão se estiver aberta
+        if 'conn' in locals():
+            conn.close()
+            
+        # Remove banco de teste
+        if os.path.exists(test_db):
+            os.remove(test_db)
+            print("\n🧹 Banco de teste removido")
 
 if __name__ == "__main__":
     load_dotenv()

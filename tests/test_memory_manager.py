@@ -1,9 +1,11 @@
-# tests/test_memory_manager.py
+# tests/test_memory_manager.py 
+# python -m tests.test_memory_manager
 import sys
 import os
 import asyncio
 from pathlib import Path
 import logging
+
 
 # Configura logging
 logging.basicConfig(level=logging.INFO)
@@ -45,7 +47,13 @@ async def test_memory_manager():
         
         print("\n📊 Testando estatísticas...")
         stats = await memory.get_category_stats(user_id, chat_id)
-        print(f"✓ Categorias encontradas: {[stat['category'] for stat in stats]}")
+        if isinstance(stats, dict):
+            categories = stats.get('categories', [])
+            total = stats.get('total_messages', 0)
+            print(f"✓ Categorias encontradas: {len(categories)}")
+            print(f"✓ Total de mensagens: {total}")
+        else:
+            raise ValueError("Estatísticas retornadas em formato inválido")
         
         return True
         
@@ -54,8 +62,16 @@ async def test_memory_manager():
         return False
     finally:
         if memory:
-            del memory  # Força a limpeza do ChromaDB
-
+            print("\n🧹 Limpando dados de teste...")
+            try:
+                # Apaga todos os documentos do teste usando o user_id específico
+                memory.messages_collection.delete(
+                    where={"user_id": {"$eq": "123"}}  # 123 é o user_id usado no teste
+                )
+                print("✓ Dados limpos com sucesso")
+            except Exception as e:
+                print(f"⚠️ Erro ao limpar dados: {e}")
+                
 if __name__ == "__main__":
     print("🚀 Iniciando teste do MemoryManager...")
     success = asyncio.run(test_memory_manager())

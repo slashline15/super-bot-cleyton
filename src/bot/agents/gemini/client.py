@@ -1,9 +1,20 @@
 # src/bot/agents/gemini/client.py
 
-"""Módulo para interagir com o modelo Gemini com configuração flexível."""
+"""
+Cliente para interação com o modelo Gemini.
 
+Este módulo fornece uma interface para interagir com o modelo Gemini da Google,
+oferecendo funcionalidades como processamento de texto, gerenciamento de chat
+e configuração flexível.
 
-"""Cliente para interação com o modelo Gemini."""
+Attributes:
+    load_dotenv: Carrega variáveis de ambiente do arquivo .env
+
+Example:
+    >>> from src.bot.agents.gemini import GeminiClient
+    >>> client = GeminiClient()
+    >>> response = client.send_message(chat_session, "Olá!")
+"""
 
 import os
 import time
@@ -16,6 +27,28 @@ load_dotenv()
 
 
 class GeminiClient:
+    """
+    Cliente para interação com o modelo Gemini com configuração flexível.
+
+    Esta classe gerencia a conexão e interação com a API do Gemini,
+    permitindo configuração dinâmica e processamento de diferentes tipos de entrada.
+
+    Args:
+        api_key (str, optional): Chave da API Gemini. Se não fornecida, busca em GEMINI_API_KEY
+        model_name (str): Nome do modelo Gemini a ser usado
+        system_instruction (str, optional): Instrução de sistema para o modelo
+        config (GeminiConfig, optional): Configurações personalizadas para o cliente
+
+    Attributes:
+        model: Instância do modelo Gemini configurado
+        config: Configurações atuais do cliente
+
+    Example:
+        >>> client = GeminiClient(model_name="gemini-1.5-pro")
+        >>> chat = client.start_chat_session()
+        >>> response = client.send_message(chat, "Como posso ajudar?")
+    """
+
     def __init__(
         self, 
         api_key=None, 
@@ -48,7 +81,16 @@ class GeminiClient:
         self._initialize_model()
     
     def _initialize_model(self):
-        """Inicializa ou reinicializa o modelo com as configurações atuais."""
+        """
+        Inicializa ou reinicializa o modelo com as configurações atuais.
+
+        Este método é chamado internamente durante a inicialização e
+        quando as configurações são atualizadas.
+
+        Raises:
+            ValueError: Se as configurações forem inválidas
+            RuntimeError: Se houver erro na inicialização do modelo
+        """
         model_params = {
             "model_name": self.model_name,
             "generation_config": self.config.to_dict(),
@@ -65,25 +107,49 @@ class GeminiClient:
         Atualiza a configuração do cliente e reinicializa o modelo.
         
         Args:
-            new_config: Nova instância de GeminiConfig
+            new_config (GeminiConfig): Nova configuração a ser aplicada
+
+        Raises:
+            ValueError: Se a nova configuração for inválida
+
+        Example:
+            >>> new_config = GeminiConfig(temperature=0.8)
+            >>> client.update_config(new_config)
         """
         self.config = new_config
         self._initialize_model()
     
     def get_current_config(self) -> GeminiConfig:
-        """Retorna a configuração atual."""
+        """
+        Retorna a configuração atual do cliente.
+
+        Returns:
+            GeminiConfig: Configuração atual em uso
+
+        Example:
+            >>> config = client.get_current_config()
+            >>> print(f"Temperatura atual: {config.temperature}")
+        """
         return self.config
 
     def upload_file(self, file_path, mime_type="text/plain"):
         """
-        Faz upload de um arquivo para o Gemini.
+        Faz upload de um arquivo para processamento pelo Gemini.
 
         Args:
-            file_path: Caminho do arquivo a ser enviado
-            mime_type: Tipo MIME do arquivo
-            
+            file_path (str): Caminho do arquivo a ser enviado
+            mime_type (str): Tipo MIME do arquivo (default: "text/plain")
+
         Returns:
-            Objeto do arquivo retornado pela API
+            object: Objeto do arquivo processado pela API
+
+        Raises:
+            FileNotFoundError: Se o arquivo não for encontrado
+            ValueError: Se o arquivo estiver vazio ou inválido
+
+        Example:
+            >>> file = client.upload_file("documento.txt")
+            >>> print(f"Arquivo processado: {file.name}")
         """
         if not os.path.exists(file_path):
             raise FileNotFoundError(f"Arquivo não encontrado: {file_path}")
@@ -122,13 +188,21 @@ class GeminiClient:
 
     def start_chat_session(self, history=None):
         """
-        Inicia uma sessão de chat com o histórico fornecido.
+        Inicia uma nova sessão de chat com histórico opcional.
 
         Args:
-            history: Lista de mensagens (cada uma é um dicionário com 'role' e 'parts')
-            
+            history (List[Dict], optional): Lista de mensagens anteriores
+                Cada mensagem deve ter 'role' e 'parts'
+
         Returns:
-            Objeto da sessão de chat
+            ChatSession: Nova sessão de chat inicializada
+
+        Raises:
+            ValueError: Se o histórico fornecido for inválido
+
+        Example:
+            >>> history = [{"role": "user", "parts": ["Olá"]}]
+            >>> chat = client.start_chat_session(history)
         """
         return self.model.start_chat(history=history or [])
 
@@ -154,13 +228,18 @@ class GeminiClient:
     @staticmethod
     def token_cost(response):
         """
-        Retorna o custo em tokens da resposta.
+        Calcula o custo em tokens da resposta.
 
         Args:
-            response: Objeto resposta retornado pelo modelo
-            
+            response (Response): Objeto de resposta do modelo
+
         Returns:
-            String informativa sobre uso de tokens ou "N/A" se não disponível
+            str: Informação sobre uso de tokens ou "N/A"
+
+        Example:
+            >>> response = client.send_message(chat, "Olá")
+            >>> cost = client.token_cost(response)
+            >>> print(f"Custo: {cost}")
         """
         try:
             # Tenta diferentes atributos que podem conter informação de tokens

@@ -8,6 +8,24 @@ from bot.database.db_init import Database
 logger = logging.getLogger('MemoryManager')
 
 class MemoryManager:
+    """
+    Gerenciador de memória usando ChromaDB e SQLite.
+
+    Esta classe gerencia o armazenamento e recuperação de mensagens,
+    mantendo contexto e permitindo busca semântica eficiente.
+
+    Args:
+        persist_directory (str): Diretório para persistência do ChromaDB
+
+    Attributes:
+        client: Cliente ChromaDB configurado
+        messages_collection: Coleção de mensagens no ChromaDB
+        db: Conexão com banco SQLite
+
+    Example:
+        >>> memory = MemoryManager("./data/chroma")
+        >>> stats = await memory.get_category_stats(1, 1)
+    """
     def __init__(self, persist_directory="./chroma_db"):
         """
         Inicializa o gerenciador de memória usando ChromaDB e SQLite

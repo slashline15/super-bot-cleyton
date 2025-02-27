@@ -7,7 +7,40 @@ from bot.database.db_init import Database
 
 logger = logging.getLogger('DocumentManager')
 
+"""
+Gerenciador de documentos do sistema.
+
+Este módulo implementa o processamento e armazenamento de documentos longos,
+dividindo-os em chunks menores para processamento eficiente e mantendo
+metadados e relacionamentos.
+
+Attributes:
+    logger: Logger configurado para o módulo
+
+Example:
+    >>> doc_manager = DocumentManager(memory_manager)
+    >>> doc_id = await doc_manager.add_document(content, metadata)
+"""
+
 class DocumentManager:
+    """
+    Gerenciador para processamento e armazenamento de documentos.
+
+    Esta classe gerencia documentos longos, dividindo-os em chunks
+    e mantendo metadados para busca eficiente.
+
+    Args:
+        memory_manager: Instância do MemoryManager para acesso ao ChromaDB
+
+    Attributes:
+        memory: Referência ao MemoryManager
+        db: Conexão com banco SQLite
+        documents_collection: Coleção de documentos no ChromaDB
+
+    Example:
+        >>> manager = DocumentManager(memory_manager)
+        >>> results = await manager.search_documents("orçamento")
+    """
     def __init__(self, memory_manager):
         """
         Inicializa o gerenciador de documentos.

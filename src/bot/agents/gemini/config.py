@@ -1,6 +1,14 @@
 # src/bot/agents/gemini/config.py
 """
 Configurações para o cliente Gemini.
+
+Este módulo define as configurações disponíveis para personalizar o comportamento
+do cliente Gemini, incluindo parâmetros de geração de texto e formatação de resposta.
+
+Example:
+    >>> from src.bot.agents.gemini import GeminiConfig
+    >>> config = GeminiConfig(temperature=0.7)
+    >>> print(config.to_dict())
 """
 
 from dataclasses import dataclass
@@ -11,13 +19,27 @@ from typing import Optional, Dict, Any
 class GeminiConfig:
     """
     Classe para gerenciar a configuração do cliente Gemini.
-    
-    Attributes:
+
+    Esta classe utiliza dataclasses para definir e validar os parâmetros
+    de configuração do modelo Gemini.
+
+    Args:
         temperature (float): Controla a aleatoriedade das respostas (0.0 a 1.0)
         top_p (float): Controla a diversidade do texto (0.0 a 1.0)
         top_k (int): Número de tokens mais prováveis a considerar
         max_output_tokens (int): Número máximo de tokens na resposta
         response_mime_type (str): Tipo MIME da resposta
+
+    Attributes:
+        temperature: Temperatura para geração de texto
+        top_p: Valor de top-p sampling
+        top_k: Valor de top-k sampling
+        max_output_tokens: Limite máximo de tokens
+        response_mime_type: Formato da resposta
+
+    Example:
+        >>> config = GeminiConfig(temperature=0.8, top_p=0.9)
+        >>> print(f"Temperatura: {config.temperature}")
     """
     
     temperature: float = 0.2

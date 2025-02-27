@@ -68,7 +68,8 @@ class TelegramLLMHandler:
             if update.message.text:
                 # Processa mensagem de texto
                 user_message = update.message.text
-                logger.info(f"Mensagem de texto recebida: {user_message[:50]}...")
+                logger.info(f"Recebendo mensagem. User ID: {user_id}, Chat ID: {chat_id}")
+                logger.info(f"Conteúdo: {user_message[:50]}...")
                 
             elif update.message.voice:
                 # Processa mensagem de voz
@@ -95,17 +96,19 @@ class TelegramLLMHandler:
                 return
             
             # Processa a mensagem com o LLM
+            logger.info("Iniciando processamento com LLM...")
             response = await self.llm_agent.process_message(
                 message=user_message,
                 user_id=user_id,
                 chat_id=chat_id
             )
+            logger.info("Processamento LLM concluído")
             
             # Envia a resposta
             await update.message.reply_text(response)
             
         except Exception as e:
-            logger.error(f"Erro ao processar mensagem: {e}", exc_info=True)
+            logger.error(f"Erro detalhado: {str(e)}", exc_info=True)
             await update.message.reply_text("Desculpe, ocorreu um erro ao processar sua mensagem.")
 
 # Instância global do handler

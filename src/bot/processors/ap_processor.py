@@ -9,11 +9,19 @@ from bot.processors.document_processor import DocumentProcessor, NFSeData
 logger = logging.getLogger('APProcessor')
 
 class APProcessor(DocumentProcessor):
-    """Processa NFSe e gera dados para Autorização de Pagamento"""
-    
+    """
+    Processa NFSe e gera dados para Autorização de Pagamento.
+
+    Esta classe herda de DocumentProcessor e implementa a lógica
+    para processar dados de NFSe e gerar dados para Autorização de Pagamento.
+
+    Attributes:
+        next_ap_number: Controle de numeração das APs
+    """
     def __init__(self):
         super().__init__()
         self.next_ap_number = 1  # Controle de numeração das APs
+
     
     def process_nfse(self, nfse_data: NFSeData) -> AuthorizationData:
         """
@@ -59,10 +67,16 @@ class APProcessor(DocumentProcessor):
             raise
     
     def _generate_ap_number(self) -> str:
-        """Gera número sequencial para a AP"""
+        """
+        Gera número sequencial para a AP.
+
+        Este método incrementa o número sequencial da AP e retorna
+        o número formatado como "YR-001", "YR-002", etc.
+        """
         ap_num = f"YR-{self.next_ap_number:03d}"
         self.next_ap_number += 1
         return ap_num
+
     
     def _calculate_retencoes(self, valor_bruto: float) -> dict:
         """

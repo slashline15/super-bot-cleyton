@@ -9,6 +9,7 @@ __pycache__/
 *.egg-info/
 dist/
 build/
+project_doc_config.json
 
 # Credenciais e configurações sensíveis
 credentials/*
@@ -24,7 +25,7 @@ test_chroma_db/
 
 # Arquivos temporários e cache
 temp/
-database/
+# database/
 
 # IDEs e editores
 .vscode/
@@ -45,3 +46,9 @@ data/docs/tree-histories/
 # logs e arquivos temporários
 *.logs
 *.tmp
+tree.py
+data/docs/controle_financeiro
+data/docs/controle_financeiro/Balancete
+data/docs/controle_financeiro/nf
+data/docs
+trash

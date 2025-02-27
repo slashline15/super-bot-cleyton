@@ -3,6 +3,10 @@ import sys
 import os
 import logging
 from datetime import datetime
+import tempfile
+import uuid
+import shutil
+import asyncio
 
 # Configuração do logging
 logging.basicConfig(level=logging.INFO)
@@ -16,10 +20,13 @@ from bot.memory.document_manager import DocumentManager
 
 async def test_document_processing():
     """Teste das funcionalidades do DocumentManager"""
+    # Cria um diretório temporário único
+    test_dir = os.path.join(tempfile.gettempdir(), f"test_chroma_{uuid.uuid4().hex}")
+    
     try:
         # Inicializa os gerenciadores
-        logger.info("Iniciando teste do DocumentManager...")
-        memory = MemoryManager(persist_directory="./test_chroma_db")
+        logger.info(f"Iniciando teste do DocumentManager em {test_dir}...")
+        memory = MemoryManager(persist_directory=test_dir)
         doc_manager = DocumentManager(memory)
         
         # Documento de teste
@@ -55,30 +62,76 @@ async def test_document_processing():
             chunk_overlap=20
         )
         
-        # Teste 2: Buscar conteúdo
+        # Verifica se o documento foi adicionado
+        assert doc_id is not None, "Documento não foi adicionado corretamente"
+        
+        # Teste 2: Buscar sem filtros
         logger.info("Teste 2: Buscando conteúdo...")
         results = await doc_manager.search_documents(
             query="chunks diferentes",
-            filters={"type": "text"}
+            limit=5
         )
         
-        # Verifica os resultados
+        # Verifica os resultados da busca
+        assert results is not None, "Busca não retornou resultados"
+        assert len(results) > 0, "Nenhum resultado encontrado"
+        
         if results:
             logger.info(f"Encontrados {len(results)} resultados")
             for i, result in enumerate(results, 1):
                 logger.info(f"Resultado {i}:")
                 logger.info(f"- Conteúdo: {result['content'][:100]}...")
                 logger.info(f"- Metadados: {result['metadata']}")
-        else:
-            logger.warning("Nenhum resultado encontrado!")
+                
+                # Verifica metadados essenciais
+                assert 'doc_id' in result['metadata'], "doc_id não encontrado nos metadados"
+                assert 'chunk_index' in result['metadata'], "chunk_index não encontrado nos metadados"
+                assert 'total_chunks' in result['metadata'], "total_chunks não encontrado nos metadados"
+        
+        # Teste 3: Buscar com filtros
+        logger.info("Teste 3: Buscando com filtros...")
+        filtered_results = await doc_manager.search_documents(
+            query="teste",
+            filters={"type": "text"},
+            limit=2
+        )
+        
+        # Verifica os resultados filtrados
+        assert len(filtered_results) > 0, "Busca filtrada não retornou resultados"
+        assert filtered_results[0]['metadata']['type'] == 'text', "Filtro de tipo não funcionou"
         
         return "Testes do DocumentManager concluídos com sucesso!"
         
     except Exception as e:
         logger.error(f"Erro durante os testes: {str(e)}")
         raise
+        
+    finally:
+        # Aguarda um momento antes de tentar limpar
+        await asyncio.sleep(1)
+        
+        # Tenta limpar o diretório de teste
+        try:
+            # Força o garbage collector para liberar recursos
+            import gc
+            gc.collect()
+            
+            if os.path.exists(test_dir):
+                # Em Windows, às vezes precisamos de múltiplas tentativas
+                for _ in range(3):
+                    try:
+                        shutil.rmtree(test_dir, ignore_errors=True)
+                        if not os.path.exists(test_dir):
+                            logger.info("Diretório de teste removido com sucesso")
+                            break
+                        await asyncio.sleep(1)
+                    except Exception:
+                        continue
+                else:
+                    logger.warning(f"Não foi possível remover o diretório de teste: {test_dir}")
+        except Exception as e:
+            logger.error(f"Erro ao limpar diretório de teste: {e}")
 
 if __name__ == "__main__":
-    import asyncio
     result = asyncio.run(test_document_processing())
     print(result)
