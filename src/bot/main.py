@@ -105,6 +105,9 @@ def main():
     # Handler para comando /memoria
     application.add_handler(CommandHandler("memoria", telegram_llm_handler.handle_memoria))
     
+    # Handler para comando /lembrar
+    application.add_handler(CommandHandler("lembrar", telegram_llm_handler.handle_lembrar))
+    
     # Handler para mensagens regulares
     application.add_handler(MessageHandler(
         (filters.TEXT | filters.VOICE) & ~filters.COMMAND, 

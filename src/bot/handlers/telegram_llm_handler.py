@@ -66,6 +66,10 @@ class TelegramLLMHandler:
             response += "\nDica: Para buscar informações específicas, pergunte diretamente sobre o assunto."
                 
             # Enviar com markdown
+            # Procura onde tá o problema - caracteres especiais nos nomes das categorias
+            response = response.replace('*', '').replace('_', '')  # Remove caracteres markdown problemáticos
+            # Ou simplesmente desative o markdown:
+            # await update.message.reply_text(response, parse_mode=None)
             await update.message.reply_text(response, parse_mode='Markdown')
             
         except Exception as e:
@@ -125,6 +129,67 @@ class TelegramLLMHandler:
         except Exception as e:
             logger.error(f"Erro detalhado: {str(e)}", exc_info=True)
             await update.message.reply_text("Desculpe, ocorreu um erro ao processar sua mensagem.")
+            
+    async def handle_lembrar(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+        """Processa o comando /lembrar [tópico]"""
+        try:
+            user_id = update.effective_user.id
+            chat_id = update.effective_chat.id
+            
+            # Extrai o tópico da mensagem
+            message_text = update.message.text
+            topic = message_text.replace('/lembrar', '').strip()
+            
+            if not topic:
+                await update.message.reply_text("🧠 Por favor, especifique um tópico para eu lembrar.\nExemplo: /lembrar projeto XYZ")
+                return
+                
+            # Avisa que está buscando
+            processing_msg = await update.message.reply_text(f"🔍 Buscando memórias sobre: {topic}...")
+            
+            # Busca no sistema de memória
+            relevant_memories = await self.llm_agent.memory.get_relevant_context(
+                query=topic,
+                user_id=user_id,
+                chat_id=chat_id,
+                limit=5,
+                time_window=365 * 24 * 60  # Um ano inteiro
+            )
+            
+            if not relevant_memories:
+                await processing_msg.edit_text(f"🤔 Não encontrei memórias específicas sobre '{topic}'.")
+                return
+                
+            # Gera um resumo usando o LLM
+            memories_text = "\n\n".join([f"{mem['role']}: {mem['content']}" for mem in relevant_memories])
+            
+            summary_prompt = f"""
+            Estas são memórias recuperadas sobre o tópico '{topic}':
+            
+            {memories_text}
+            
+            Por favor, resuma o que sabemos sobre este tópico de forma concisa e natural.
+            Inclua detalhes específicos, datas, números e outras informações concretas que foram mencionadas.
+            Se houver divergências ou evolução do assunto ao longo do tempo, indique isso.
+            """
+            
+            # Gera o resumo
+            summary_response = await self.llm_agent._call_openai_api([
+                {"role": "system", "content": "Você é um assistente que resume memórias sobre tópicos específicos."},
+                {"role": "user", "content": summary_prompt}
+            ])
+            
+            summary = summary_response.choices[0].message.content
+            
+            # Formata a resposta final
+            response = f"🧠 **Memórias sobre '{topic}'**\n\n{summary}"
+            
+            # Envia o resumo
+            await processing_msg.edit_text(response, parse_mode='Markdown')
+            
+        except Exception as e:
+            logger.error(f"Erro ao processar comando /lembrar: {e}", exc_info=True)
+            await update.message.reply_text("Erro ao buscar memórias. Tente novamente!")
 
 # Instância global do handler
 telegram_llm_handler = TelegramLLMHandler()
