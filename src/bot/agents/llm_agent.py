@@ -91,11 +91,20 @@ class LLMAgent:
         return len(self.encoding.encode(text))
 
     
-    async def get_context_messages(self, user_id: int, chat_id: int) -> list:
+    async def get_context_messages(self, user_id: int, chat_id: int, query: str = "") -> list:
         """
-        Recupera mensagens de contexto de forma simplificada
+        Recupera contexto combinando mensagens recentes e semanticamente relevantes
+        
+        Args:
+            user_id: ID do usuário
+            chat_id: ID do chat
+            query: Consulta atual para buscar contexto relevante
+            
+        Returns:
+            list: Lista de mensagens formatadas para o contexto
         """
         try:
+            # 1. Pega as mensagens recentes (memória de curto prazo)
             with self.db.connect() as conn:
                 cursor = conn.cursor()
                 cursor.execute("""
@@ -104,25 +113,89 @@ class LLMAgent:
                     WHERE user_id = ? AND chat_id = ?
                     ORDER BY timestamp DESC
                     LIMIT ?
-                """, (user_id, chat_id, Config.MAX_CONTEXT_MESSAGES))
+                """, (user_id, chat_id, Config.MAX_CONTEXT_MESSAGES // 2))  # Usa metade do limite para mensagens recentes
                 
-                messages = cursor.fetchall()
+                recent_messages = cursor.fetchall()
+            
+            # 2. Busca mensagens semanticamente relevantes (se tiver query)
+            semantic_messages = []
+            if query and len(query.strip()) > 0:
+                relevant_context = await self.memory.get_relevant_context(
+                    query=query,
+                    user_id=user_id,
+                    chat_id=chat_id,
+                    limit=Config.MAX_CONTEXT_MESSAGES // 2,  # Outra metade para relevantes
+                    time_window=365 * 24 * 60  # Um ano inteiro!
+                )
                 
                 # Converte para o formato esperado
-                context_messages = []
-                for row in reversed(messages):
-                    role, content = row
-                    context_messages.append({
+                for msg in relevant_context:
+                    # Evita duplicações com as mensagens recentes
+                    if msg['id'] not in [recent['id'] for recent in recent_messages if 'id' in recent]:
+                        semantic_messages.append({
+                            "role": msg['role'],
+                            "content": msg['content']
+                        })
+            
+            # 3. Busca mensagens importantes de qualquer época
+            with self.db.connect() as conn:
+                cursor = conn.cursor()
+                cursor.execute("""
+                    SELECT role, content 
+                    FROM messages 
+                    WHERE user_id = ? AND chat_id = ? AND importance >= 4
+                    ORDER BY timestamp DESC
+                    LIMIT ?
+                """, (user_id, chat_id, Config.MAX_CONTEXT_MESSAGES // 4))  # Um quarto para mensagens importantes
+                
+                important_messages = cursor.fetchall()
+            
+            # Converte mensagens recentes para o formato esperado
+            recent_context = []
+            for row in reversed(recent_messages):
+                role, content = row
+                recent_context.append({
+                    "role": role,
+                    "content": content
+                })
+            
+            # Converte mensagens importantes para o formato esperado
+            important_context = []
+            for row in important_messages:
+                role, content = row
+                # Evita duplicações
+                if {"role": role, "content": content} not in recent_context and {"role": role, "content": content} not in semantic_messages:
+                    important_context.append({
                         "role": role,
                         "content": content
                     })
-                
-                logger.info(f"Contexto recuperado: {len(context_messages)} mensagens")
-                return context_messages
-                
+            
+            # Combina todas as fontes de contexto
+            all_context = recent_context + semantic_messages + important_context
+            
+            # Filtra duplicatas e limita o tamanho total
+            unique_messages = []
+            seen_contents = set()
+            total_tokens = 0
+            
+            for msg in all_context:
+                content_hash = hash(msg['content'])
+                if content_hash not in seen_contents:
+                    tokens = self.count_tokens(msg['content'])
+                    if total_tokens + tokens <= Config.MAX_TOKENS:
+                        unique_messages.append(msg)
+                        seen_contents.add(content_hash)
+                        total_tokens += tokens
+                    else:
+                        break
+            
+            logger.info(f"Contexto recuperado: {len(unique_messages)} mensagens ({len(recent_context)} recentes, {len(semantic_messages)} semânticas, {len(important_context)} importantes)")
+            return unique_messages
+                    
         except Exception as e:
             logger.error(f"Erro ao recuperar contexto: {str(e)}", exc_info=True)
             return []
+        
     async def process_message(self, message: str, user_id: int, chat_id: int) -> str:
         """
         Processa uma mensagem do usuário e gera uma resposta usando o modelo LLM.
@@ -154,8 +227,10 @@ class LLMAgent:
                 role="user"
             )
             
-            # Obtém contexto relevante
-            context_messages = await self.get_context_messages(user_id, chat_id)
+            # Obtém contexto relevante, usando a mensagem atual como query
+            context_messages = await self.get_context_messages(user_id, chat_id, query=message)
+            
+            # Resto do código continua igual...
             
             # Prepara mensagens para o modelo
             messages = [{"role": "system", "content": self.system_prompt}]
@@ -208,10 +283,6 @@ class LLMAgent:
                 messages=messages
             )
         )
-
-    # def count_tokens(self, text: str) -> int:
-    #     """Conta tokens em um texto"""
-    #     return len(self.encoding.encode(text))
 
     async def get_memory_stats(self, user_id: int, chat_id: int) -> dict:
         """

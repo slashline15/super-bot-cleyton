@@ -13,45 +13,60 @@ class TelegramLLMHandler:
         logger.info("TelegramLLMHandler inicializado")
 
     async def handle_memoria(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
-        """Processa o comando /memoria"""
+        """Processa o comando /memoria com visualização melhorada de categorias"""
         try:
             user_id = update.effective_user.id
             chat_id = update.effective_chat.id
             
-            # Busca mensagens direto do banco
-            with self.llm_agent.db.connect() as conn:
-                cursor = conn.cursor()
-                cursor.execute('''
-                    SELECT COUNT(*) as total FROM messages 
-                    WHERE user_id = ? AND chat_id = ?
-                ''', (user_id, chat_id))
-                total = cursor.fetchone()[0]
-                
-                # Busca categorias se houver mensagens
-                categories = []
-                if total > 0:
-                    cursor.execute('''
-                        SELECT category, COUNT(*) as count 
-                        FROM messages 
-                        WHERE user_id = ? AND chat_id = ?
-                        GROUP BY category
-                    ''', (user_id, chat_id))
-                    categories = cursor.fetchall()
+            # Busca estatísticas de memória diretamente do memory_manager
+            memory_stats = await self.llm_agent.get_memory_stats(user_id, chat_id)
+            categories = memory_stats.get("categories", [])
+            total_messages = memory_stats.get("total_messages", 0)
             
-            # Monta resposta SEM MARKDOWN
-            response = "📊 Estatísticas da Memória\n\n"
-            response += f"Total de mensagens: {total}\n\n"
+            # Agrupa por importância
+            high_importance = []
+            medium_importance = []
+            low_importance = []
             
-            if categories:
-                response += "Categorias:\n"
-                for cat in categories:
-                    cat_name = cat['category'] or 'geral'
-                    response += f"- {cat_name}: {cat['count']} mensagens\n"
-            else:
-                response += "Nenhuma categoria encontrada."
+            # Organiza as categorias por importância
+            for cat in categories:
+                if not isinstance(cat, dict):  # Skip if not a dictionary
+                    continue
+                    
+                category = cat.get("category", "desconhecida")
+                count = cat.get("total", 0)
+                importance = cat.get("avg_importance", 0)
+                last_message = cat.get("last_message", "desconhecida")
                 
-            # Enviar SEM MARKDOWN!
-            await update.message.reply_text(response)
+                cat_info = f"{category} ({count} msgs)"
+                
+                if importance >= 4:
+                    high_importance.append(cat_info)
+                elif importance >= 3:
+                    medium_importance.append(cat_info)
+                else:
+                    low_importance.append(cat_info)
+            
+            # Monta resposta
+            response = f"🧠 *Memória do Assistente*\n\n"
+            response += f"🔢 Total de mensagens: {total_messages}\n\n"
+            
+            if high_importance:
+                response += "⭐ *Alta Importância:*\n"
+                response += "\n".join([f"  • {cat}" for cat in high_importance]) + "\n\n"
+                
+            if medium_importance:
+                response += "📝 *Média Importância:*\n"
+                response += "\n".join([f"  • {cat}" for cat in medium_importance]) + "\n\n"
+                
+            if low_importance:
+                response += "📌 *Baixa Importância:*\n"
+                response += "\n".join([f"  • {cat}" for cat in low_importance]) + "\n\n"
+            
+            response += "\nDica: Para buscar informações específicas, pergunte diretamente sobre o assunto."
+                
+            # Enviar com markdown
+            await update.message.reply_text(response, parse_mode='Markdown')
             
         except Exception as e:
             logger.error(f"Erro ao processar comando /memoria: {e}", exc_info=True)
