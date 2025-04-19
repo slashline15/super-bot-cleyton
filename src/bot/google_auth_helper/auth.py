@@ -381,41 +381,41 @@ class GoogleAuthHelper:
         logging.warning(f"Nenhuma configuração encontrada para o projeto {project_name}")
         return None
 
-# # Exemplo de uso
-# if __name__ == "__main__":
-#     try:
-#         # Inicializa o helper
-#         auth_helper = GoogleAuthHelper()
+# Exemplo de uso
+if __name__ == "__main__":
+    try:
+        # Inicializa o helper
+        auth_helper = GoogleAuthHelper()
         
-#         # Define o nome do projeto
-#         project_name = "meu-projeto-teste"
+        # Define o nome do projeto
+        project_name = "meu-projeto-teste"
         
-#         # Lista projetos existentes
-#         existing_projects = auth_helper.list_projects()
-#         logging.info(f"Projetos existentes: {existing_projects}")
+        # Lista projetos existentes
+        existing_projects = auth_helper.list_projects()
+        logging.info(f"Projetos existentes: {existing_projects}")
         
-#         # Configura autenticação OAuth (modo headless para ambientes sem navegador)
-#         scopes = ["https://www.googleapis.com/auth/spreadsheets.readonly"]
-#         creds = auth_helper.setup_oauth_credentials(
-#             scopes=scopes,
-#             project_name=project_name,
-#             headless=True  # Usar True em ambientes sem navegador
-#         )
+        # Configura autenticação OAuth (modo headless para ambientes sem navegador)
+        scopes = ["https://www.googleapis.com/auth/spreadsheets.readonly"]
+        creds = auth_helper.setup_oauth_credentials(
+            scopes=scopes,
+            project_name=project_name,
+            headless=True  # Usar True em ambientes sem navegador
+        )
         
-#         # Configura conta de serviço
-#         service_creds = auth_helper.setup_service_account(
-#             project_name=project_name
-#         )
+        # Configura conta de serviço
+        service_creds = auth_helper.setup_service_account(
+            project_name=project_name
+        )
         
-#         # Exemplo de configuração e uso do cache
-#         # Segunda chamada usa cache automaticamente
-#         creds_cached = auth_helper.setup_oauth_credentials(
-#             scopes=scopes,
-#             project_name=project_name
-#         )
+        # Exemplo de configuração e uso do cache
+        # Segunda chamada usa cache automaticamente
+        creds_cached = auth_helper.setup_oauth_credentials(
+            scopes=scopes,
+            project_name=project_name
+        )
             
-#     except Exception as e:
-#         logging.error(f"Erro durante a execução: {str(e)}")
+    except Exception as e:
+        logging.error(f"Erro durante a execução: {str(e)}")
         
 
 # from googleapiclient.discovery import build

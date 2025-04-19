@@ -2,8 +2,8 @@
 import asyncio
 import pytest
 from datetime import datetime
-from bot.memory.memory_manager import MemoryManager
-from config.config import Config
+from src.bot.memory.memory_manager import MemoryManager
+from src.config.config import Config
 
 @pytest.fixture
 async def memory_manager():

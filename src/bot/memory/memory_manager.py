@@ -2,8 +2,8 @@
 import chromadb
 import logging
 from datetime import datetime, timedelta
-from config.config import Config
-from bot.database.db_init import Database
+from src.config.config import Config
+from src.bot.database.db_init import Database
 
 logger = logging.getLogger('MemoryManager')
 

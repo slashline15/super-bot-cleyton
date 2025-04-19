@@ -1,7 +1,7 @@
 # handlers/telegram_llm_handler.py
 from telegram import Update
 from telegram.ext import ContextTypes
-from bot.agents.llm_agent import LLMAgent
+from src.bot.agents.llm_agent import LLMAgent
 import logging
 import asyncio
 

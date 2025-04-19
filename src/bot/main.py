@@ -17,10 +17,10 @@ import os
 from dotenv import load_dotenv
 from telegram import Update
 from telegram.ext import Application, MessageHandler, CommandHandler, filters
-from bot.handlers.telegram_llm_handler import telegram_llm_handler
+from src.bot.handlers.telegram_llm_handler import telegram_llm_handler
 import sys
-from config.config import Config
-from bot.google_auth_helper import GoogleAuthHelper
+from src.config.config import Config
+from src.bot.google_auth_helper import GoogleAuthHelper
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 # Carrega variáveis de ambiente
 load_dotenv()

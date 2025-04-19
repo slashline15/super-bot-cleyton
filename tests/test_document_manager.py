@@ -15,8 +15,8 @@ logger = logging.getLogger(__name__)
 # Adiciona o diretório src ao path
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'src'))
 
-from bot.memory.memory_manager import MemoryManager
-from bot.memory.document_manager import DocumentManager
+from src.bot.memory.memory_manager import MemoryManager
+from src.bot.memory.document_manager import DocumentManager
 
 async def test_document_processing():
     """Teste das funcionalidades do DocumentManager"""

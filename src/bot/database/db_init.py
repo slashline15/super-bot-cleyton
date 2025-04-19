@@ -12,7 +12,7 @@ import os
 from datetime import datetime
 import logging
 from contextlib import contextmanager
-from config.config import Config
+from src.config.config import Config
 
 # Configura o logger para o módulo de banco de dados
 logger = logging.getLogger(__name__)

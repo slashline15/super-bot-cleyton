@@ -9,7 +9,7 @@ from pathlib import Path
 src_path = Path(__file__).parent.parent / 'src'
 sys.path.append(str(src_path))
 
-from bot.database.db_init import Database
+from src.bot.database.db_init import Database
 
 def test_database_migration():
     """Testa se a migração do banco de dados foi bem sucedida"""

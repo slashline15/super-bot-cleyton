@@ -14,7 +14,7 @@ logging.basicConfig(level=logging.INFO)
 src_path = Path(__file__).parent.parent / 'src'
 sys.path.append(str(src_path))
 
-from bot.memory.memory_manager import MemoryManager
+from src.bot.memory.memory_manager import MemoryManager
 
 async def test_memory_manager():
     """Testa as funcionalidades básicas do MemoryManager"""

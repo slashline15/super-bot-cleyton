@@ -5,8 +5,8 @@ from unittest.mock import patch, MagicMock
 import logging
 import sys
 sys.path.append('.')
-from bot.utils.notion_sync import NotionSync
-from config.config import Config
+from src.bot.utils.notion_sync import NotionSync
+from src.config.config import Config
 
 # Configuração de log para os testes
 logging.basicConfig(level=logging.DEBUG)

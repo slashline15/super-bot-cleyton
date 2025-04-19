@@ -4,9 +4,9 @@ import asyncio
 import tiktoken
 import logging
 from datetime import datetime
-from bot.database.db_init import Database
-from bot.memory.memory_manager import MemoryManager
-from config.config import Config
+from src.bot.database.db_init import Database
+from src.bot.memory.memory_manager import MemoryManager
+from src.config.config import Config
 
 logger = logging.getLogger('LLMAgent')
 SYSTEM_PROMPT = Config.SYSTEM_PROMPT

@@ -12,8 +12,8 @@ logger = logging.getLogger(__name__)
 # Adiciona o diretório src ao path
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'src'))
 
-from bot.processors.document_processor import NFSeData
-from bot.processors.ap_processor import APProcessor
+from src.bot.processors.document_processor import NFSeData
+from src.bot.processors.ap_processor import APProcessor
 
 def test_ap_generation():
     """Testa geração de AP a partir de NFSe"""
