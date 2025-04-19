@@ -90,39 +90,56 @@ class LLMAgent:
         """
         return len(self.encoding.encode(text))
 
-    
     async def get_context_messages(self, user_id: int, chat_id: int) -> list:
         """
-        Recupera mensagens de contexto de forma simplificada
+        Recupera mensagens de contexto relevantes para a conversa atual.
+
+        Busca mensagens recentes e relevantes do histórico, respeitando
+        limites de tokens e janela temporal.
+
+        Args:
+            user_id (int): ID do usuário
+            chat_id (int): ID do chat
+
+        Returns:
+            list: Lista de mensagens formatadas para contexto
+
+        Raises:
+            Exception: Se houver erro ao recuperar mensagens
         """
         try:
-            with self.db.connect() as conn:
-                cursor = conn.cursor()
-                cursor.execute("""
-                    SELECT role, content 
-                    FROM messages 
-                    WHERE user_id = ? AND chat_id = ?
-                    ORDER BY timestamp DESC
-                    LIMIT ?
-                """, (user_id, chat_id, Config.MAX_CONTEXT_MESSAGES))
-                
-                messages = cursor.fetchall()
-                
-                # Converte para o formato esperado
-                context_messages = []
-                for row in reversed(messages):
-                    role, content = row
-                    context_messages.append({
-                        "role": role,
-                        "content": content
-                    })
-                
-                logger.info(f"Contexto recuperado: {len(context_messages)} mensagens")
-                return context_messages
-                
+            # Obtém últimas mensagens como contexto base
+            recent_messages = await self.memory.get_relevant_context(
+                query="",  # Vazio para pegar as mais recentes
+                user_id=user_id,
+                chat_id=chat_id,
+                limit=Config.MAX_CONTEXT_MESSAGES,
+                time_window=Config.CONTEXT_TIME_WINDOW
+            )
+            
+            context_messages = []
+            total_tokens = 0
+            
+            # Processa as mensagens mantendo controle de tokens
+            for msg in reversed(recent_messages):
+                tokens = self.count_tokens(msg['content'])
+                if total_tokens + tokens > Config.MAX_TOKENS:
+                    logger.warning(f"Limite de tokens atingido: {total_tokens}/{Config.MAX_TOKENS}")
+                    break
+                    
+                context_messages.append({
+                    "role": msg['role'],
+                    "content": msg['content']
+                })
+                total_tokens += tokens
+            
+            logger.debug(f"Contexto recuperado: {len(context_messages)} mensagens, {total_tokens} tokens")
+            return context_messages
+            
         except Exception as e:
             logger.error(f"Erro ao recuperar contexto: {str(e)}", exc_info=True)
             return []
+
     async def process_message(self, message: str, user_id: int, chat_id: int) -> str:
         """
         Processa uma mensagem do usuário e gera uma resposta usando o modelo LLM.

@@ -18,44 +18,44 @@ class TelegramLLMHandler:
             user_id = update.effective_user.id
             chat_id = update.effective_chat.id
             
-            # Obtém estatísticas
-            stats = await self.llm_agent.get_memory_stats(user_id, chat_id)
+            # Busca mensagens direto do banco
+            with self.llm_agent.db.connect() as conn:
+                cursor = conn.cursor()
+                cursor.execute('''
+                    SELECT COUNT(*) as total FROM messages 
+                    WHERE user_id = ? AND chat_id = ?
+                ''', (user_id, chat_id))
+                total = cursor.fetchone()[0]
+                
+                # Busca categorias se houver mensagens
+                categories = []
+                if total > 0:
+                    cursor.execute('''
+                        SELECT category, COUNT(*) as count 
+                        FROM messages 
+                        WHERE user_id = ? AND chat_id = ?
+                        GROUP BY category
+                    ''', (user_id, chat_id))
+                    categories = cursor.fetchall()
             
-            # Formata a mensagem
-            response = "📊 **Estatísticas da Memória**\n\n"
+            # Monta resposta SEM MARKDOWN
+            response = "📊 Estatísticas da Memória\n\n"
+            response += f"Total de mensagens: {total}\n\n"
             
-            if stats and stats.get('categories'):
-                categories = stats['categories']
-                if not categories:  # Se a lista estiver vazia
-                    response = "Ainda não há mensagens registradas."
-                else:
-                    for cat in categories:
-                        # Verifica se todos os campos necessários existem
-                        total = cat.get('total', 0)
-                        avg_importance = cat.get('avg_importance', 0)
-                        last_message = cat.get('last_message', 'N/A')
-                        category = cat.get('category', 'desconhecida')
-                        
-                        response += f"**{category}**:\n"
-                        response += f"- Total mensagens: {total}\n"
-                        response += f"- Importância média: {avg_importance:.1f}\n"
-                        response += f"- Última mensagem: {last_message}\n\n"
-                    
-                    total_messages = stats.get('total_messages', sum(c.get('total', 0) for c in categories))
-                    response += f"**Total de mensagens**: {total_messages}\n"
+            if categories:
+                response += "Categorias:\n"
+                for cat in categories:
+                    cat_name = cat['category'] or 'geral'
+                    response += f"- {cat_name}: {cat['count']} mensagens\n"
             else:
-                response = "Nenhuma mensagem encontrada ainda."
-
-            logger.info(f"Estatísticas obtidas com sucesso para user_id={user_id}, chat_id={chat_id}")
-            await update.message.reply_text(response, parse_mode='Markdown')
+                response += "Nenhuma categoria encontrada."
+                
+            # Enviar SEM MARKDOWN!
+            await update.message.reply_text(response)
             
         except Exception as e:
             logger.error(f"Erro ao processar comando /memoria: {e}", exc_info=True)
-            error_response = (
-                "Desculpe, ocorreu um erro ao buscar as estatísticas.\n"
-                "Por favor, tente novamente em alguns instantes."
-            )
-            await update.message.reply_text(error_response)
+            await update.message.reply_text("Erro ao buscar estatísticas. Tente novamente!")
             
     async def handle_message(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         """
