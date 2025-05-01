@@ -22,6 +22,7 @@ credentials/
 *.db
 *.sqlite3
 chroma_db/
+chroma_db-2/
 test_chroma_db/
 
 # Arquivos temporários e cache
@@ -53,3 +54,6 @@ data/docs/controle_financeiro/Balancete
 data/docs/controle_financeiro/nf
 data/docs
 trash
+
+db_messages.txt
+db_messages.txt
