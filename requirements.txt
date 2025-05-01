@@ -1,172 +1,365 @@
-altair==5.5.0
-annotated-types==0.7.0
-anyio==4.8.0
+#-------------------------------------------------------#
+#                     TELEGRAM BOT                      #
+#-------------------------------------------------------#
+python-telegram-bot==21.10           # Bot Telegram com suporte a handlers, comandos, envio de mídia etc.
+
+#-------------------------------------------------------#
+#                     OPENAI API                        #
+#-------------------------------------------------------#
+openai==1.76.2                       # Cliente oficial da OpenAI (GPT-3.5, GPT-4)
+httpx==0.28.1                        # Cliente HTTP assíncrono, usado internamente pelo openai
+anyio==4.9.0                         # Backend assíncrono usado por httpx
+httpcore==1.0.9                      # Núcleo de conexões usado pelo httpx
+h11==0.16.0                          # Protocolo HTTP/1.1 (base do httpcore)
+tqdm==4.67.1                         # Barra de progresso (opcional, mas usada em streamings longos)
+certifi==2025.4.26                   # Certificados SSL atualizados
+sniffio==1.3.1                       # Detecção de ambiente async
+idna==3.10                           # Codificação de domínios internacionais (ex: IDN)
+
+#-------------------------------------------------------#
+#                   GOOGLE GEMINI API                   #
+#-------------------------------------------------------#
+google-generativeai==0.8.5               # Cliente oficial para usar o Gemini (textos, embeddings)
+google-ai-generativelanguage==0.6.15     # Lib do modelo Gemini (usada internamente)
+google-api-core==2.25.0rc0               # Núcleo da API do Google (timeout, retries, gRPC)
+proto-plus==1.26.1                       # Wrapper de protocolo protobuf
+grpcio==1.71.0                           # Framework de comunicação binária (gRPC)
+grpcio-status==1.71.0                    # Status codes do gRPC
+google-auth==2.39.0                      # Autenticação com serviços Google
+googleapis-common-protos==1.70.0         # Protótipos comuns usados por várias APIs Google
+rsa==4.9.1                               # Criptografia para autenticação
+pyasn1==0.6.1                            # ASN.1 usado em tokens de segurança
+pyasn1_modules==0.4.2                    # Módulos extras para ASN.1
+
+#-------------------------------------------------------#
+#                     CHROMA DB                         #
+#-------------------------------------------------------#
+chromadb==1.0.7                      # Banco vetorial com suporte a persistência local
+chroma-hnswlib==0.7.6                # Indexador HNSW (busca vetorial eficiente)
+click==8.1.8                         # CLI utilizada internamente no chromadb
+orjson==3.10.18                      # JSON ultra rápido (usado na serialização de vetores)
+PyPika==0.48.9                       # DSL para SQL (interno ao Chroma)
+attrs==25.3.0                        # Validação e estruturação de objetos
+overrides==7.7.0                     # Utilitário para declarar override de métodos
+python-dateutil==2.9.0.post0        # Manipulação de datas (timestamps, formatação)
+tenacity==9.1.2                      # Retry automático (ex: reconectar banco vetorial)
+filelock==3.18.0                    # Controle de acesso concorrente a arquivos
+fsspec==2025.3.2                    # Interface genérica para arquivos (local, remoto etc.)
+durationpy==0.9                     # Manipulação de strings de duração (ex: "1h30m")
+
+#-------------------------------------------------------#
+#                        FASTAPI                        #
+#-------------------------------------------------------#
+fastapi==0.115.9                    # Framework web leve e rápido para APIs (usado localmente)
+uvicorn==0.34.2                     # Servidor ASGI (roda o FastAPI)
+starlette==0.45.3                   # Base do FastAPI (roteamento, middlewares)
+python-dotenv==1.0.1                # Carrega variáveis de ambiente do .env
+
+#-------------------------------------------------------#
+#                  BASE / SUPORTE GERAL                 #
+#-------------------------------------------------------#
+pydantic==2.10.6                    # Validação de dados e criação de modelos
+pydantic_core==2.27.2               # Núcleo de alto desempenho para o pydantic
+typing_extensions==4.13.2           # Suporte a tipos mais avançados (usado em diversos pacotes)
+annotated-types==0.7.0              # Tipagem estendida compatível com Pydantic 2
+distro==1.9.0                       # Detecção do sistema operacional
+colorama==0.4.6                     # Cores no terminal (logs)
+six==1.17.0                         # Compatibilidade Python 2 e 3 (usado por dependências)
+zipp==3.21.0                        # Manipulação de arquivos zip (usado por importlib)
+importlib_resources==6.5.2          # Carregamento de recursos (substitui pkg_resources)
+importlib_metadata==8.6.1           # Lê metadados de pacotes Python
+jsonschema==4.23.0                  # Validação de schemas JSON
+jsonschema-specifications==2025.4.1 # Especificações usadas pelo jsonschema
+referencing==0.36.2                 # Resolve referências dentro de schemas JSON
+rpds-py==0.24.0                     # Dependência de performance usada no jsonschema
+packaging==25.0                     # Manipulação de versões, ranges etc.
+PyYAML==6.0.2                       # Leitura de arquivos YAML
+tomli==2.2.1                        # Leitura de arquivos TOML
+
+#-------------------------------------------------------#
+#      PEDIU PARA INSTALAR, MAS NÃO É NECESSÁRIO        #
+#      (Dependências transitivas ou ferramentas dev)    #
+#-------------------------------------------------------#
 asgiref==3.8.1
-asttokens==3.0.0
-attrs==25.1.0
 backoff==2.2.1
-bcrypt==4.2.1
-blinker==1.9.0
-# Editable Git install with no remote (bot==0.1)
--e c:\users\danie\onedrive\área de trabalho\bot2
-build==1.2.2.post1
-cachetools==5.5.1
-certifi==2025.1.31
+bcrypt==4.3.0
+cachetools==5.5.2
 cffi==1.17.1
 charset-normalizer==3.4.1
-chroma-hnswlib==0.7.6
-chromadb==0.6.3
-click==8.1.8
-colorama==0.4.6
 coloredlogs==15.0.1
-comm==0.2.2
-cryptography==44.0.0
-debugpy==1.8.12
-decorator==5.1.1
+cryptography==44.0.2
 Deprecated==1.2.18
-distro==1.9.0
-durationpy==0.9
-executing==2.2.0
-fastapi==0.115.8
-ffmpeg-python==0.2.0
-filelock==3.17.0
-flatbuffers==25.1.24
-fsspec==2024.12.0
-future==1.0.0
-gitdb==4.0.12
-GitPython==3.1.44
-google-ai-generativelanguage==0.6.15
-google-api-core==2.24.1
-google-api-python-client==2.160.0
-google-auth==2.38.0
+exceptiongroup==1.2.2
+flatbuffers==25.2.10
+google-api-python-client==2.169.0
 google-auth-httplib2==0.2.0
-google-auth-oauthlib==1.2.1
-google-generativeai==0.8.4
-googleapis-common-protos==1.66.0
-grpcio==1.70.0
-grpcio-status==1.70.0
-h11==0.14.0
-httpcore==1.0.7
+google-auth-oauthlib==1.2.2
 httplib2==0.22.0
 httptools==0.6.4
-httpx==0.28.1
-huggingface-hub==0.28.1
+huggingface-hub==0.30.2
 humanfriendly==10.0
-idna==3.10
-importlib_metadata==8.5.0
-importlib_resources==6.5.2
-iniconfig==2.0.0
-ipykernel==6.29.5
-ipython==8.31.0
-jedi==0.19.2
-Jinja2==3.1.5
-jiter==0.8.2
-jsonschema==4.23.0
-jsonschema-specifications==2024.10.1
-jupyter_client==8.6.3
-jupyter_core==5.7.2
-kubernetes==32.0.0
-llvmlite==0.44.0
+jiter==0.9.0
 markdown-it-py==3.0.0
-MarkupSafe==3.0.2
-matplotlib-inline==0.1.7
 mdurl==0.1.2
 mmh3==5.1.0
-monotonic==1.6
-more-itertools==10.6.0
 mpmath==1.3.0
-narwhals==1.25.2
-nest-asyncio==1.6.0
-networkx==3.4.2
-notion-client==2.3.0
-numba==0.61.0
-numpy==2.1.3
+numpy==2.2.5
 oauthlib==3.2.2
-onnxruntime==1.20.1
-openai==1.60.2
-openai-whisper==20240930
-opencv-python==4.11.0.86
-opentelemetry-api==1.29.0
-opentelemetry-exporter-otlp-proto-common==1.29.0
-opentelemetry-exporter-otlp-proto-grpc==1.29.0
-opentelemetry-instrumentation==0.50b0
-opentelemetry-instrumentation-asgi==0.50b0
-opentelemetry-instrumentation-fastapi==0.50b0
-opentelemetry-proto==1.29.0
-opentelemetry-sdk==1.29.0
-opentelemetry-semantic-conventions==0.50b0
-opentelemetry-util-http==0.50b0
-orjson==3.10.15
-overrides==7.7.0
-packaging==24.2
-pandas==2.2.3
-parso==0.8.4
-pathlib==1.0.1
-pillow==11.1.0
-platformdirs==4.3.6
-pluggy==1.5.0
-posthog==3.11.0
-prompt_toolkit==3.0.50
-proto-plus==1.26.0
-protobuf==5.29.3
-psutil==6.1.1
-pure_eval==0.2.3
-pyarrow==19.0.0
-pyasn1==0.6.1
-pyasn1_modules==0.4.1
+onnxruntime==1.21.1
+opentelemetry-api==1.32.1
+opentelemetry-exporter-otlp-proto-common==1.32.1
+opentelemetry-exporter-otlp-proto-grpc==1.32.1
+opentelemetry-proto==1.32.1
+opentelemetry-sdk==1.32.1
+opentelemetry-semantic-conventions==0.53b1
+pipdeptree==2.26.1
+posthog==4.0.1
+protobuf==5.29.4
 pycparser==2.22
-pydantic==2.10.6
-pydantic_core==2.27.2
-pydeck==0.9.1
-pygame==2.6.1
-Pygments==2.19.1
-pyparsing==3.2.1
-PyPika==0.48.9
-pyproject_hooks==1.2.0
-pyreadline3==3.5.4
-pytesseract==0.3.13
-pytest==8.3.4
-python-dateutil==2.9.0.post0
-python-dotenv==1.0.1
-python-telegram-bot==21.10
-pytz==2025.1
-pywin32==308
-PyYAML==6.0.2
-pyzmq==26.2.1
-referencing==0.36.2
+pyparsing==3.2.3
+pyreadline3==3.5.4 # Específico para Windows, interatividade no console
 regex==2024.11.6
 requests==2.32.3
 requests-oauthlib==2.0.0
-rich==13.9.4
-rpds-py==0.22.3
-rsa==4.9
-setuptools==75.8.0
-shellingham==1.5.4
-six==1.17.0
-smmap==5.0.2
-sniffio==1.3.1
-stack-data==0.6.3
-starlette==0.45.3
-streamlit==1.42.0
-sympy==1.13.1
-tenacity==9.0.0
+sympy==1.14.0
 tiktoken==0.8.0
-tokenizers==0.21.0
-toml==0.10.2
-torch==2.6.0
-tornado==6.4.2
-tqdm==4.67.1
-traitlets==5.14.3
-typer==0.15.1
-typing_extensions==4.12.2
-tzdata==2025.1
+tokenizers==0.21.1
 uritemplate==4.1.1
-urllib3==2.3.0
-uvicorn==0.34.0
-watchdog==6.0.0
-watchfiles==1.0.4
-wcwidth==0.2.13
-websocket-client==1.8.0
-websockets==14.2
+urllib3==2.4.0
 wrapt==1.17.2
-zipp==3.21.0
+
+#-------------------------------------------------------#
+#                     PIPDEPTREE                        #
+#-------------------------------------------------------#
+
+# (venv) PS D:\python\bot\super-bot-cleyton> pipdeptree
+# Warning!!! Possibly conflicting dependencies found:
+# * chroma-hnswlib==0.7.6
+#  - numpy [required: Any, installed: ?]
+# * chromadb==1.0.7
+#  - build [required: >=1.0.3, installed: ?]
+#  - numpy [required: >=1.22.5, installed: ?]
+#  - posthog [required: >=2.4.0, installed: ?]
+#  - onnxruntime [required: >=1.14.1, installed: ?]
+#  - opentelemetry-api [required: >=1.2.0, installed: ?]
+#  - opentelemetry-exporter-otlp-proto-grpc [required: >=1.2.0, installed: ?]
+#  - opentelemetry-instrumentation-fastapi [required: >=0.41b0, installed: ?]
+#  - opentelemetry-sdk [required: >=1.2.0, installed: ?]
+#  - tokenizers [required: >=0.13.2, installed: ?]
+#  - typer [required: >=0.9.0, installed: ?]
+#  - kubernetes [required: >=28.1.0, installed: ?]
+#  - rich [required: >=10.11.0, installed: ?]
+# * google-generativeai==0.8.5
+#  - google-api-python-client [required: Any, installed: ?]
+# * openai==1.76.2
+#  - jiter [required: >=0.4.0,<1, installed: ?]
+# * tiktoken==0.8.0
+#  - regex [required: >=2022.1.18, installed: ?]
+# ------------------------------------------------------------------------
+# asgiref==3.8.1
+# └── typing_extensions [required: >=4, installed: 4.13.2]
+# backoff==2.2.1
+# chromadb==1.0.7
+# ├── build [required: >=1.0.3, installed: ?]
+# ├── pydantic [required: >=1.9, installed: 2.10.6]
+# │   ├── annotated-types [required: >=0.6.0, installed: 0.7.0]
+# │   ├── pydantic_core [required: ==2.27.2, installed: 2.27.2]
+# │   │   └── typing_extensions [required: >=4.6.0,!=4.7.0, installed: 4.13.2]
+# │   └── typing_extensions [required: >=4.12.2, installed: 4.13.2]
+# ├── chroma-hnswlib [required: ==0.7.6, installed: 0.7.6]
+# │   └── numpy [required: Any, installed: ?]
+# ├── fastapi [required: ==0.115.9, installed: 0.115.9]
+# │   ├── starlette [required: >=0.40.0,<0.46.0, installed: 0.45.3]
+# │   │   └── anyio [required: >=3.6.2,<5, installed: 4.9.0]
+# │   │       ├── exceptiongroup [required: >=1.0.2, installed: 1.2.2]
+# │   │       ├── idna [required: >=2.8, installed: 3.10]
+# │   │       ├── sniffio [required: >=1.1, installed: 1.3.1]
+# │   │       └── typing_extensions [required: >=4.5, installed: 4.13.2]
+# │   ├── pydantic [required: >=1.7.4,<3.0.0,!=2.1.0,!=2.0.1,!=2.0.0,!=1.8.1,!=1.8, installed: 2.10.6]
+# │   │   ├── annotated-types [required: >=0.6.0, installed: 0.7.0]
+# │   │   ├── pydantic_core [required: ==2.27.2, installed: 2.27.2]
+# │   │   │   └── typing_extensions [required: >=4.6.0,!=4.7.0, installed: 4.13.2]
+# │   │   └── typing_extensions [required: >=4.12.2, installed: 4.13.2]
+# │   └── typing_extensions [required: >=4.8.0, installed: 4.13.2]
+# ├── uvicorn [required: >=0.18.3, installed: 0.34.2]
+# │   ├── click [required: >=7.0, installed: 8.1.8]
+# │   │   └── colorama [required: Any, installed: 0.4.6]
+# │   ├── h11 [required: >=0.8, installed: 0.16.0]
+# │   └── typing_extensions [required: >=4.0, installed: 4.13.2]
+# ├── numpy [required: >=1.22.5, installed: ?]
+# ├── posthog [required: >=2.4.0, installed: ?]
+# ├── typing_extensions [required: >=4.5.0, installed: 4.13.2]
+# ├── onnxruntime [required: >=1.14.1, installed: ?]
+# ├── opentelemetry-api [required: >=1.2.0, installed: ?]
+# ├── opentelemetry-exporter-otlp-proto-grpc [required: >=1.2.0, installed: ?]
+# ├── opentelemetry-instrumentation-fastapi [required: >=0.41b0, installed: ?]
+# ├── opentelemetry-sdk [required: >=1.2.0, installed: ?]
+# ├── tokenizers [required: >=0.13.2, installed: ?]
+# ├── PyPika [required: >=0.48.9, installed: 0.48.9]
+# ├── tqdm [required: >=4.65.0, installed: 4.67.1]
+# │   └── colorama [required: Any, installed: 0.4.6]
+# ├── overrides [required: >=7.3.1, installed: 7.7.0]
+# ├── importlib_resources [required: Any, installed: 6.5.2]
+# ├── grpcio [required: >=1.58.0, installed: 1.71.0]
+# ├── bcrypt [required: >=4.0.1, installed: 4.3.0]
+# ├── typer [required: >=0.9.0, installed: ?]
+# ├── kubernetes [required: >=28.1.0, installed: ?]
+# ├── tenacity [required: >=8.2.3, installed: 9.1.2]
+# ├── PyYAML [required: >=6.0.0, installed: 6.0.2]
+# ├── mmh3 [required: >=4.0.1, installed: 5.1.0]
+# ├── orjson [required: >=3.9.12, installed: 3.10.18]
+# ├── httpx [required: >=0.27.0, installed: 0.28.1]
+# │   ├── anyio [required: Any, installed: 4.9.0]
+# │   │   ├── exceptiongroup [required: >=1.0.2, installed: 1.2.2]
+# │   │   ├── idna [required: >=2.8, installed: 3.10]
+# │   │   ├── sniffio [required: >=1.1, installed: 1.3.1]
+# │   │   └── typing_extensions [required: >=4.5, installed: 4.13.2]
+# │   ├── certifi [required: Any, installed: 2025.4.26]
+# │   ├── httpcore [required: ==1.*, installed: 1.0.9]
+# │   │   ├── certifi [required: Any, installed: 2025.4.26]
+# │   │   └── h11 [required: >=0.16, installed: 0.16.0]
+# │   └── idna [required: Any, installed: 3.10]
+# ├── rich [required: >=10.11.0, installed: ?]
+# └── jsonschema [required: >=4.19.0, installed: 4.23.0]
+#     ├── attrs [required: >=22.2.0, installed: 25.3.0]
+#     ├── jsonschema-specifications [required: >=2023.03.6, installed: 2025.4.1]
+#     │   └── referencing [required: >=0.31.0, installed: 0.36.2]
+#     │       ├── attrs [required: >=22.2.0, installed: 25.3.0]
+#     │       ├── rpds-py [required: >=0.7.0, installed: 0.24.0]
+#     │       └── typing_extensions [required: >=4.4.0, installed: 4.13.2]
+#     ├── referencing [required: >=0.28.4, installed: 0.36.2]
+#     │   ├── attrs [required: >=22.2.0, installed: 25.3.0]
+#     │   ├── rpds-py [required: >=0.7.0, installed: 0.24.0]
+#     │   └── typing_extensions [required: >=4.4.0, installed: 4.13.2]
+#     └── rpds-py [required: >=0.7.1, installed: 0.24.0]
+# durationpy==0.9
+# filelock==3.18.0
+# fsspec==2025.3.2
+# google-generativeai==0.8.5
+# ├── google-ai-generativelanguage [required: ==0.6.15, installed: 0.6.15]
+# │   ├── google-api-core [required: >=1.34.1,<3.0.0dev,!=2.9.*,!=2.8.*,!=2.7.*,!=2.6.*,!=2.5.*,!=2.4.*,!=2.3.*,!=2.2.*,!=2.10.*,!=2.1.*,!=2.0.*, installed: 2.25.0rc0]
+# │   │   ├── googleapis-common-protos [required: >=1.56.2,<2.0.0, installed: 1.70.0]
+# │   │   │   └── protobuf [required: >=3.20.2,<7.0.0,!=4.21.5,!=4.21.4,!=4.21.3,!=4.21.2,!=4.21.1, installed: 5.29.4]
+# │   │   ├── protobuf [required: >=3.19.5,<7.0.0,!=4.21.5,!=4.21.4,!=4.21.3,!=4.21.2,!=4.21.1,!=4.21.0,!=3.20.1,!=3.20.0, installed: 5.29.4]
+# │   │   ├── proto-plus [required: >=1.22.3,<2.0.0, installed: 1.26.1]
+# │   │   │   └── protobuf [required: >=3.19.0,<7.0.0, installed: 5.29.4]
+# │   │   ├── google-auth [required: >=2.14.1,<3.0.0, installed: 2.39.0]
+# │   │   │   ├── cachetools [required: >=2.0.0,<6.0, installed: 5.5.2]
+# │   │   │   ├── pyasn1_modules [required: >=0.2.1, installed: 0.4.2]
+# │   │   │   │   └── pyasn1 [required: >=0.6.1,<0.7.0, installed: 0.6.1]
+# │   │   │   └── rsa [required: >=3.1.4,<5, installed: 4.9.1]
+# │   │   │       └── pyasn1 [required: >=0.1.3, installed: 0.6.1]
+# │   │   └── requests [required: >=2.18.0,<3.0.0, installed: 2.32.3]
+# │   │       ├── charset-normalizer [required: >=2,<4, installed: 3.4.1]
+# │   │       ├── idna [required: >=2.5,<4, installed: 3.10]
+# │   │       ├── urllib3 [required: >=1.21.1,<3, installed: 2.4.0]
+# │   │       └── certifi [required: >=2017.4.17, installed: 2025.4.26]
+# │   ├── google-auth [required: >=2.14.1,<3.0.0dev,!=2.25.0,!=2.24.0, installed: 2.39.0]
+# │   │   ├── cachetools [required: >=2.0.0,<6.0, installed: 5.5.2]
+# │   │   ├── pyasn1_modules [required: >=0.2.1, installed: 0.4.2]
+# │   │   │   └── pyasn1 [required: >=0.6.1,<0.7.0, installed: 0.6.1]
+# │   │   └── rsa [required: >=3.1.4,<5, installed: 4.9.1]
+# │   │       └── pyasn1 [required: >=0.1.3, installed: 0.6.1]
+# │   ├── proto-plus [required: >=1.22.3,<2.0.0dev, installed: 1.26.1]
+# │   │   └── protobuf [required: >=3.19.0,<7.0.0, installed: 5.29.4]
+# │   └── protobuf [required: >=3.20.2,<6.0.0dev,!=4.21.5,!=4.21.4,!=4.21.3,!=4.21.2,!=4.21.1,!=4.21.0, installed: 5.29.4]
+# ├── google-api-core [required: Any, installed: 2.25.0rc0]
+# │   ├── googleapis-common-protos [required: >=1.56.2,<2.0.0, installed: 1.70.0]
+# │   │   └── protobuf [required: >=3.20.2,<7.0.0,!=4.21.5,!=4.21.4,!=4.21.3,!=4.21.2,!=4.21.1, installed: 5.29.4]
+# │   ├── protobuf [required: >=3.19.5,<7.0.0,!=4.21.5,!=4.21.4,!=4.21.3,!=4.21.2,!=4.21.1,!=4.21.0,!=3.20.1,!=3.20.0, installed: 5.29.4]
+# │   ├── proto-plus [required: >=1.22.3,<2.0.0, installed: 1.26.1]
+# │   │   └── protobuf [required: >=3.19.0,<7.0.0, installed: 5.29.4]
+# │   ├── google-auth [required: >=2.14.1,<3.0.0, installed: 2.39.0]
+# │   │   ├── cachetools [required: >=2.0.0,<6.0, installed: 5.5.2]
+# │   │   ├── pyasn1_modules [required: >=0.2.1, installed: 0.4.2]
+# │   │   │   └── pyasn1 [required: >=0.6.1,<0.7.0, installed: 0.6.1]
+# │   │   └── rsa [required: >=3.1.4,<5, installed: 4.9.1]
+# │   │       └── pyasn1 [required: >=0.1.3, installed: 0.6.1]
+# │   └── requests [required: >=2.18.0,<3.0.0, installed: 2.32.3]
+# │       ├── charset-normalizer [required: >=2,<4, installed: 3.4.1]
+# │       ├── idna [required: >=2.5,<4, installed: 3.10]
+# │       ├── urllib3 [required: >=1.21.1,<3, installed: 2.4.0]
+# │       └── certifi [required: >=2017.4.17, installed: 2025.4.26]
+# ├── google-api-python-client [required: Any, installed: ?]
+# ├── google-auth [required: >=2.15.0, installed: 2.39.0]
+# │   ├── cachetools [required: >=2.0.0,<6.0, installed: 5.5.2]
+# │   ├── pyasn1_modules [required: >=0.2.1, installed: 0.4.2]
+# │   │   └── pyasn1 [required: >=0.6.1,<0.7.0, installed: 0.6.1]
+# │   └── rsa [required: >=3.1.4,<5, installed: 4.9.1]
+# │       └── pyasn1 [required: >=0.1.3, installed: 0.6.1]
+# ├── protobuf [required: Any, installed: 5.29.4]
+# ├── pydantic [required: Any, installed: 2.10.6]
+# │   ├── annotated-types [required: >=0.6.0, installed: 0.7.0]
+# │   ├── pydantic_core [required: ==2.27.2, installed: 2.27.2]
+# │   │   └── typing_extensions [required: >=4.6.0,!=4.7.0, installed: 4.13.2]
+# │   └── typing_extensions [required: >=4.12.2, installed: 4.13.2]
+# ├── tqdm [required: Any, installed: 4.67.1]
+# │   └── colorama [required: Any, installed: 0.4.6]
+# └── typing_extensions [required: Any, installed: 4.13.2]
+# grpcio-status==1.71.0
+# ├── protobuf [required: >=5.26.1,<6.0dev, installed: 5.29.4]
+# ├── grpcio [required: >=1.71.0, installed: 1.71.0]
+# └── googleapis-common-protos [required: >=1.5.5, installed: 1.70.0]
+#     └── protobuf [required: >=3.20.2,<7.0.0,!=4.21.5,!=4.21.4,!=4.21.3,!=4.21.2,!=4.21.1, installed: 5.29.4]
+# httptools==0.6.4
+# importlib_metadata==8.6.1
+# └── zipp [required: >=3.20, installed: 3.21.0]
+# markdown-it-py==3.0.0
+# └── mdurl [required: ~=0.1, installed: 0.1.2]
+# mpmath==1.3.0
+# openai==1.76.2
+# ├── anyio [required: >=3.5.0,<5, installed: 4.9.0]
+# │   ├── exceptiongroup [required: >=1.0.2, installed: 1.2.2]
+# │   ├── idna [required: >=2.8, installed: 3.10]
+# │   ├── sniffio [required: >=1.1, installed: 1.3.1]
+# │   └── typing_extensions [required: >=4.5, installed: 4.13.2]
+# ├── distro [required: >=1.7.0,<2, installed: 1.9.0]
+# ├── httpx [required: >=0.23.0,<1, installed: 0.28.1]
+# │   ├── anyio [required: Any, installed: 4.9.0]
+# │   │   ├── exceptiongroup [required: >=1.0.2, installed: 1.2.2]
+# │   │   ├── idna [required: >=2.8, installed: 3.10]
+# │   │   ├── sniffio [required: >=1.1, installed: 1.3.1]
+# │   │   └── typing_extensions [required: >=4.5, installed: 4.13.2]
+# │   ├── certifi [required: Any, installed: 2025.4.26]
+# │   ├── httpcore [required: ==1.*, installed: 1.0.9]
+# │   │   ├── certifi [required: Any, installed: 2025.4.26]
+# │   │   └── h11 [required: >=0.16, installed: 0.16.0]
+# │   └── idna [required: Any, installed: 3.10]
+# ├── jiter [required: >=0.4.0,<1, installed: ?]
+# ├── pydantic [required: >=1.9.0,<3, installed: 2.10.6]
+# │   ├── annotated-types [required: >=0.6.0, installed: 0.7.0]
+# │   ├── pydantic_core [required: ==2.27.2, installed: 2.27.2]
+# │   │   └── typing_extensions [required: >=4.6.0,!=4.7.0, installed: 4.13.2]
+# │   └── typing_extensions [required: >=4.12.2, installed: 4.13.2]
+# ├── sniffio [required: Any, installed: 1.3.1]
+# ├── tqdm [required: >4, installed: 4.67.1]
+# │   └── colorama [required: Any, installed: 0.4.6]
+# └── typing_extensions [required: >=4.11,<5, installed: 4.13.2]
+# pipdeptree==2.26.1
+# ├── packaging [required: >=24.1, installed: 25.0]
+# └── pip [required: >=24.2, installed: 25.1]
+# python-dateutil==2.9.0.post0
+# └── six [required: >=1.5, installed: 1.17.0]
+# python-dotenv==1.0.1
+# python-telegram-bot==21.10
+# └── httpx [required: ~=0.27, installed: 0.28.1]
+#     ├── anyio [required: Any, installed: 4.9.0]
+#     │   ├── exceptiongroup [required: >=1.0.2, installed: 1.2.2]
+#     │   ├── idna [required: >=2.8, installed: 3.10]
+#     │   ├── sniffio [required: >=1.1, installed: 1.3.1]
+#     │   └── typing_extensions [required: >=4.5, installed: 4.13.2]
+#     ├── certifi [required: Any, installed: 2025.4.26]
+#     ├── httpcore [required: ==1.*, installed: 1.0.9]
+#     │   ├── certifi [required: Any, installed: 2025.4.26]
+#     │   └── h11 [required: >=0.16, installed: 0.16.0]
+#     └── idna [required: Any, installed: 3.10]
+# setuptools==65.5.0
+# tiktoken==0.8.0
+# ├── regex [required: >=2022.1.18, installed: ?]
+# └── requests [required: >=2.26.0, installed: 2.32.3]
+#     ├── charset-normalizer [required: >=2,<4, installed: 3.4.1]
+#     ├── idna [required: >=2.5,<4, installed: 3.10]
+#     ├── urllib3 [required: >=1.21.1,<3, installed: 2.4.0]
+#     └── certifi [required: >=2017.4.17, installed: 2025.4.26]
+# tomli==2.2.1
+# (venv) PS D:\python\bot\super-bot-cleyton> 

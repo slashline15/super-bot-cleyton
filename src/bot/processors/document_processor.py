@@ -4,8 +4,8 @@ import logging
 from dataclasses import dataclass
 from datetime import datetime
 from typing import Dict, Any, Optional
-import pytesseract
-from PIL import Image
+# import pytesseract
+# from PIL import Image
 import re
 
 logger = logging.getLogger('DocumentProcessor')

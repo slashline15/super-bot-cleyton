@@ -14,8 +14,8 @@ project_doc_config.json
 # Credenciais e configurações sensíveis
 credentials/*
 !credentials/.gitkeep
+credentials/
 .env
-.env.*
 .env.antigo
 
 # Bancos de dados e memória

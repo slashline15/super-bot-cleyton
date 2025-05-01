@@ -7,7 +7,7 @@ import asyncio
 from google.oauth2.credentials import Credentials
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
-from notion_client import Client
+# from notion_client import Client
 import sqlite3
 import json
 
