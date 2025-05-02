@@ -34,6 +34,7 @@ temp/
 .idea/
 *.swp
 *.swo
+logs/
 
 # Arquivos de sistema
 desktop.ini

@@ -5,6 +5,7 @@ from src.bot.agents.llm_agent import LLMAgent
 from src.bot.utils.audio_utils import transcribe_audio
 import logging
 import asyncio
+import os
 
 logger = logging.getLogger('TelegramLLMHandler')
 
@@ -120,7 +121,7 @@ class TelegramLLMHandler:
             # Processa a mensagem com o LLM
             logger.info("Iniciando processamento com LLM...")
             response = await self.llm_agent.process_message(
-                message=user_message,
+                text=user_message,
                 user_id=user_id,
                 chat_id=chat_id
             )
@@ -217,6 +218,35 @@ class TelegramLLMHandler:
             await update.message.reply_text("🛠 Modo debug DESATIVADO! Logs suprimidos.")
         else:
             await update.message.reply_text("🛠 Uso: /debug on para ativar ou /debug off para desativar.")
+    
+    async def handle_logs(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+        """Envia um resumo dos logs da sessão atual."""
+        try:
+            from src.bot.utils.log_config import export_log_summary
+            
+            # Avisa que está gerando o resumo
+            processing_msg = await update.message.reply_text("📊 Gerando resumo de logs...")
+            
+            # Exporta o resumo
+            log_file = export_log_summary()
+            
+            # Envia o arquivo
+            with open(log_file, 'rb') as file:
+                await context.bot.send_document(
+                    chat_id=update.effective_chat.id,
+                    document=file,
+                    filename=os.path.basename(log_file),
+                    caption="📝 Resumo dos logs da sessão atual"
+                )
+            
+            # Atualiza a mensagem
+            await processing_msg.edit_text("✅ Logs enviados com sucesso!")
+            
+        except Exception as e:
+            logger.error(f"Erro ao enviar logs: {e}", exc_info=True)
+            await update.message.reply_text("❌ Erro ao gerar resumo de logs.")
 
-# Instância global do handler
+
+
 telegram_llm_handler = TelegramLLMHandler()
+# wm testes

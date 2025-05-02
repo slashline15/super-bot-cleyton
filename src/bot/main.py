@@ -21,6 +21,9 @@ from src.bot.handlers.telegram_llm_handler import telegram_llm_handler
 import sys
 from src.config.config import Config
 from src.bot.google_auth_helper import GoogleAuthHelper
+from src.bot.utils.log_config import setup_logging
+import os
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 # Carrega variáveis de ambiente
 load_dotenv()
@@ -30,7 +33,7 @@ logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     level=logging.INFO
 )
-logger = logging.getLogger(__name__)
+logger = setup_logging()
 
 
     
@@ -63,15 +66,15 @@ def init_google_auth():
         logging.error(f"Erro na autenticação: {e}")
         raise
 
-    # Obtém as credenciais
-    credentials = init_google_auth()
-    
-    # Exemplo de uso com Google Sheets
-    from googleapiclient.discovery import build
-    sheets_service = build('sheets', 'v4', credentials=credentials)
-    
-    # Exemplo de uso com Google Drive
-    drive_service = build('drive', 'v3', credentials=credentials)
+# # Obtém as credenciais
+# credentials = init_google_auth()
+
+# # Exemplo de uso com Google Sheets
+# from googleapiclient.discovery import build
+# sheets_service = build('sheets', 'v4', credentials=credentials)
+
+# # Exemplo de uso com Google Drive
+# drive_service = build('drive', 'v3', credentials=credentials)
 
 
 def main():
@@ -107,6 +110,9 @@ def main():
     
     # Handler para comando /lembrar
     application.add_handler(CommandHandler("lembrar", telegram_llm_handler.handle_lembrar))
+    
+    # Handler para envio dos logs
+    application.add_handler(CommandHandler("logs", telegram_llm_handler.handle_logs))
     
     # Handler para mensagens regulares
     application.add_handler(MessageHandler(
