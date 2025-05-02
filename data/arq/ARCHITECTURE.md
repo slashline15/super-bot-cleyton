@@ -1,7 +1,7 @@
 # Arquitetura do Projeto
 
 ## 1. Visão Geral
-Este projeto é um bot do Telegram especializado em engenharia civil, com funcionalidades de gestão de obras, controle financeiro e processamento de documentos. O bot utiliza inteligência artificial (OpenAI) para processamento de linguagem natural e mantém um sistema de memória persistente.
+Este projeto é um bot do Telegram especializado em engenharia civil, com funcionalidades de gestão de obras, controle financeiro e processamento de documentos. O bot utiliza inteligência artificial para processamento de linguagem natural e mantém um sistema de memória persistente.
 
 ## 2. Componentes Principais
 
@@ -12,7 +12,7 @@ Este projeto é um bot do Telegram especializado em engenharia civil, com funcio
 
 ### 2.2 Sistema de LLM (`src/bot/agents/llm_agent.py`)
 - Interface com a API da OpenAI
-- Processa mensagens usando GPT
+- Processa mensagens usando GPT ou Gemini
 - Gerencia contexto e histórico de conversas
 
 ### 2.3 Sistema de Memória (`src/bot/memory/`)
@@ -62,7 +62,7 @@ graph LR
 
 ## 6. Integrações Externas
 - Telegram Bot API
-- OpenAI API (GPT)
+- LLM (Atualmente, com suporte para OpenAI e Gemini)
 - Google Sheets (opcional)
 - Notion (opcional)
 

@@ -1,3 +1,12 @@
+# Teste do uso de processamento de arquivos do Gemini CLI
+
+Durante o teste, ela respondia as mensagens com qualidade aceitável para um modelo de baixo custo. O que chama a atenção é sua habilidade multomodal de processar aquivos diversos. 
+
+Em um dos testes, eu pedi para ela transcrever um arquivo de áudio, em formato `.wav` onde a mesma executou cm uma qualidade excelente, sendo capaz de identificar o nome dos envolvidos pela voz e contexto do audio em que era falado o nome dos envolvidos, que respondia e a IA considerou no texto de transcrição.
+
+No segundo teste, pedi para ela analisar uma pasta desse projeto. Não era um arquivo e sim uma pasta de arquivos. Após o processamento, perguntou o que gostaria de saber e eu pedi para que ela gerasse um ´README.md` básico, em formato markdown, no qual está abaixo na íntegra. Ela errou no diagrama Mermaid, porém fez uma descrição geral abrangente e concisa, mosrando uma excelente capacidade de contextualização, mesmo em cenários de quantidade de informação maiores.
+
+---
 Você: file data\docs\tree-histories\bot-project-2025-02-08-00-22-55.txt
 
 Processando arquivo: data\docs\tree-histories\bot-project-2025-02-08-00-22-55.txt
@@ -18,7 +27,6 @@ Iniciando análise...
 
 Resultado da análise:
 ----------------------------------------------------------------------------------------------------
-```markdown
 # Projeto Super Bot Eng Cleyton 1.0
 
 Cognitive Logic Engineered for Yield-driven Technology and Operational Networks
@@ -104,10 +112,7 @@ O projeto é organizado em módulos principais com responsabilidades bem definid
 - Refinar a personalidade e as habilidades do chatbot.
 - Adicionar mais recursos e integrações conforme necessário.
 
-```
+---
 
 
 Esta documentação oferece uma visão geral da estrutura do projeto, destacando os módulos principais e suas responsabilidades. Ela serve como um guia inicial para entender o funcionamento do Super Bot Eng Cleyton.  A clareza na organização do código e a documentação adequada facilitarão a manutenção e a expansão do projeto no futuro.
-----------------------------------------------------------------------------------------------------
-
-Você:
