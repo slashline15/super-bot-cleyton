@@ -1,0 +1,56 @@
+{
+  "total_tokens": {
+    "input": 2143,
+    "output": 156
+  },
+  "total_cost": 0.02611,
+  "providers": {
+    "openai": {
+      "total_tokens": {
+        "input": 2143,
+        "output": 156
+      },
+      "total_cost": 0.02611,
+      "models": {
+        "gpt-4o": {
+          "total_tokens": {
+            "input": 2143,
+            "output": 156
+          },
+          "total_cost": 0.02611
+        }
+      }
+    }
+  },
+  "sessions": [
+    {
+      "id": "20250502014054",
+      "start_time": "2025-05-02T01:40:54.029713",
+      "tokens": {
+        "input": 2143,
+        "output": 156
+      },
+      "cost": 0.02611,
+      "requests": [
+        {
+          "timestamp": "2025-05-02T01:40:54.032436",
+          "query": "Voc\u00ea tem mem\u00f3ria infinita, sim. Voc\u00ea s\u00f3 n\u00e3o lembra disso.\n",
+          "tokens": {
+            "input": 1098,
+            "output": 81
+          },
+          "cost": 0.013410000000000002
+        },
+        {
+          "timestamp": "2025-05-02T01:47:19.755230",
+          "query": "Ah, voc\u00ea parece bem.\n",
+          "tokens": {
+            "input": 1045,
+            "output": 75
+          },
+          "cost": 0.0127
+        }
+      ]
+    }
+  ]
+}

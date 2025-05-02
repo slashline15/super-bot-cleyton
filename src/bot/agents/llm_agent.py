@@ -23,6 +23,9 @@ import google.generativeai as genai
 from src.bot.database.db_init import Database
 from src.bot.memory.memory_manager import MemoryManager
 from src.config.config import Config
+from src.bot.utils.config_manager import ConfigManager
+from src.bot.utils.token_tracker import TokenTracker
+from src.bot.handlers.telegram_llm_handler import ConfigManager
 
 logger = logging.getLogger("LLMAgent")
 
@@ -172,19 +175,28 @@ class LLMAgent:
     
     def __post_init__(self) -> None:
         """Inicializa o cliente LLM com base no provedor configurado."""
-        provider = Config.LLM_PROVIDER.lower()
+        config_manager = ConfigManager()
+        provider = config_manager.get("llm_provider", Config.LLM_PROVIDER.lower())
         
         if provider == "openai":
-            self._client = OpenAIClient(Config.MODEL_NAME, Config.OPENAI_API_KEY)
+            model = config_manager.get("model", Config.MODEL_NAME)
+            self._client = OpenAIClient(model, Config.OPENAI_API_KEY)
         elif provider == "gemini":
             api_key = os.getenv("GEMINI_API_KEY") or getattr(Config, "GEMINI_API_KEY", "")
             if not api_key:
                 raise ValueError("GEMINI_API_KEY não definida")
-            self._client = GeminiClient(Config.GEMINI_MODEL_NAME, api_key)
+            model = config_manager.get("model", Config.GEMINI_MODEL_NAME)
+            self._client = GeminiClient(model, api_key)
         else:
             raise ValueError(f"Provider desconhecido: {provider}")
-            
+        
+        # Carrega prompt personalizado, se existir
+        custom_prompt = config_manager.get("custom_prompt")
+        if custom_prompt:
+            self.system_prompt = custom_prompt
+                
         logger.info(f"LLMAgent inicializado com {self._client.provider}:{self._client.name}")
+
 
     def count_tokens(self, text: str) -> int:
         """Conta o número de tokens em um texto usando o cliente específico."""
@@ -308,15 +320,9 @@ class LLMAgent:
             logger.error(f"Erro ao buscar mensagens importantes: {e}")
             return []
         
+    # Modifique o método process_message para rastrear tokens:
     async def process_message(self, text: str, user_id: int, chat_id: int) -> str:
-        """
-        Processa uma mensagem do usuário e gera uma resposta usando o modelo LLM.
-        
-        Args:
-            text: Mensagem do usuário para processar
-            user_id: ID do usuário que enviou a mensagem
-            chat_id: ID do chat onde a mensagem foi enviada
-        """
+        """Processa uma mensagem do usuário e gera uma resposta usando o modelo LLM."""
         try:
             # 1. Adiciona mensagem do usuário à memória
             await self.memory.add_message(user_id, chat_id, text, role="user")
@@ -331,6 +337,11 @@ class LLMAgent:
                 {"role": "user", "content": text},
             ]
             
+            # Conta tokens de entrada
+            input_tokens = 0
+            for msg in messages:
+                input_tokens += self.count_tokens(msg["content"])
+            
             # 4. Chama o LLM para obter resposta
             try:
                 answer = await self._client.chat(messages)
@@ -338,14 +349,32 @@ class LLMAgent:
                 logger.error(f"Erro ao chamar LLM: {e}")
                 return f"Desculpe, ocorreu um erro ao processar sua mensagem: {str(e)}"
             
+            # Conta tokens de saída
+            output_tokens = self.count_tokens(answer)
+            
+            # Rasteia uso de tokens
+            tracker = TokenTracker()
+            usage = tracker.track(
+                provider=self._client.provider,
+                model=self._client.name,
+                input_tokens=input_tokens,
+                output_tokens=output_tokens,
+                query=text
+            )
+            
+            # Log de uso
+            logger.info(
+                f"Tokens: {input_tokens} entrada, {output_tokens} saída, "
+                f"Custo: ${usage['cost']:.6f}"
+            )
+            
             # 5. Adiciona resposta à memória
             await self.memory.add_message(user_id, chat_id, answer, role="assistant")
             
             return answer
-            
         except Exception as e:
             logger.error(f"Erro ao processar mensagem: {e}", exc_info=True)
-            return "Desculpe, ocorreu um erro ao processar sua mensagem."
+            return "Dessa vez o bosta é o CLAUDE. VTNC."
 
     async def get_memory_stats(self, user_id: int, chat_id: int) -> Dict[str, Any]:
         """

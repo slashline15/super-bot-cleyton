@@ -22,6 +22,7 @@ import sys
 from src.config.config import Config
 from src.bot.google_auth_helper import GoogleAuthHelper
 from src.bot.utils.log_config import setup_logging
+from src.bot.handlers.telegram_llm_handler import setup_config_handlers
 import os
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -94,6 +95,8 @@ def main():
         return
 
     application = Application.builder().token(telegram_token).build()
+    setup_config_handlers(application)
+    
     # # Handler para comando /start
     # application.add_handler(CommandHandler("start", telegram_llm_handler.handle_start))
     
@@ -119,6 +122,10 @@ def main():
         (filters.TEXT | filters.VOICE) & ~filters.COMMAND, 
         telegram_llm_handler.handle_message
     ))
+    
+    # Handler do uso de tokens
+    application.add_handler(CommandHandler("usage", telegram_llm_handler.handle_usage))
+
 
     print("🤖Bot iniciado!")
     print("❌Pressione Ctrl+C para parar.")
