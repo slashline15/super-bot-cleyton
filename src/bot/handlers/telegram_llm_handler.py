@@ -2,6 +2,7 @@
 from telegram import Update
 from telegram.ext import ContextTypes
 from src.bot.agents.llm_agent import LLMAgent
+from src.bot.utils.audio_utils import transcribe_audio
 import logging
 import asyncio
 
@@ -10,6 +11,8 @@ logger = logging.getLogger('TelegramLLMHandler')
 class TelegramLLMHandler:
     def __init__(self):
         self.llm_agent = LLMAgent()
+        # Guarda config de debug por usuário
+        self.debug_users = {}
         logger.info("TelegramLLMHandler inicializado")
 
     async def handle_memoria(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -102,9 +105,9 @@ class TelegramLLMHandler:
                 audio_path = f"temp_audio_{user_id}.ogg"
                 await audio_file.download_to_drive(audio_path)
                 
-                # # Transcreve o áudio
-                # user_message = await transcribe_audio(audio_path)
-                # logger.info(f"Áudio transcrito: {user_message[:50]}...")
+                # Transcreve o áudio
+                user_message = await transcribe_audio(audio_path)
+                logger.info(f"Áudio transcrito: {user_message[:50]}...")
                 
                 # Remove o arquivo temporário
                 import os
@@ -190,6 +193,30 @@ class TelegramLLMHandler:
         except Exception as e:
             logger.error(f"Erro ao processar comando /lembrar: {e}", exc_info=True)
             await update.message.reply_text("Erro ao buscar memórias. Tente novamente!")
+            
+    async def handle_debug(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+        """Liga/desliga o modo debug"""
+        user_id = update.effective_user.id
+        args = context.args
+        
+        if not args:
+            # Sem argumento mostra estado atual
+            is_debug = self.debug_users.get(user_id, False)
+            await update.message.reply_text(
+                f"🛠 Modo debug está {'ATIVADO ✅' if is_debug else 'DESATIVADO ❌'}\n"
+                f"Use /debug on para ativar ou /debug off para desativar."
+            )
+            return
+        
+        command = args[0].lower()
+        if command == "on":
+            self.debug_users[user_id] = True
+            await update.message.reply_text("🛠 Modo debug ATIVADO! Vou mostrar logs detalhados durante o processamento.")
+        elif command == "off":
+            self.debug_users[user_id] = False
+            await update.message.reply_text("🛠 Modo debug DESATIVADO! Logs suprimidos.")
+        else:
+            await update.message.reply_text("🛠 Uso: /debug on para ativar ou /debug off para desativar.")
 
 # Instância global do handler
 telegram_llm_handler = TelegramLLMHandler()

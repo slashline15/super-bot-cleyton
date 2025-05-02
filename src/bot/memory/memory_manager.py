@@ -232,6 +232,7 @@ class MemoryManager:
             logger.error(f"Erro ao buscar estatísticas: {str(e)}", exc_info=True)
             return {'categories': [], 'total_messages': 0}
         
+    # Em src/bot/memory/memory_manager.py
     async def categorize_with_llm(self, content: str, user_message: bool = True) -> tuple:
         """
         Categoriza uma mensagem usando o LLM.
@@ -244,57 +245,22 @@ class MemoryManager:
             tuple: (categoria, importância)
         """
         try:
-            # Não queremos gastar tokens em categorizar mensagens muito curtas
+            # Mensagens muito curtas não valem o custo de tokens
             if len(content.split()) < 5:
                 return 'geral', 2
                 
-            # Importa LLMAgent apenas quando necessário para evitar importação circular
+            # Importação local para evitar referência circular
             from src.bot.agents.llm_agent import LLMAgent
             
-            # Cria uma instância temporária do LLMAgent
+            # Instancia o LLMAgent
             llm_agent = LLMAgent()
             
-            prompt = f"""
-            Analise a seguinte mensagem {'do usuário' if user_message else 'do assistente'} e determine:
-            1. A CATEGORIA mais adequada (uma palavra ou pequena frase)
-            2. O NÍVEL DE IMPORTÂNCIA (1 a 5, onde 5 é crucial e 1 é pouco relevante)
-            
-            Responda APENAS no formato JSON: {{"categoria": "nome_categoria", "importancia": número}}
-            
-            Exemplos de categorias: projetos, pessoal, finanças, lembretes, conceitos, técnico, referências, reuniões, etc.
-            Crie uma categoria apropriada e específica para o conteúdo.
-            
-            Mensagem: {content}
-            """
-            
-            # Chamando o LLM com um modelo menor/barato se disponível
-            model_backup = llm_agent.model
-            llm_agent.model = os.getenv("CATEGORIZATION_MODEL", "gpt-3.5-turbo") # Usa um modelo mais barato
-            
-            messages = [{"role": "system", "content": "Você é um assistente especializado em categorização de mensagens."},
-                    {"role": "user", "content": prompt}]
-            
-            response = await llm_agent._call_openai_api(messages)
-            llm_agent.model = model_backup  # Restaura o modelo original
-            
-            result_text = response.choices[0].message.content
-            
-            # Extrai o JSON
-            import json
-            import re
-            
-            # Tenta encontrar o JSON na resposta (pode estar em um bloco de código)
-            json_match = re.search(r'({.*?})', result_text.replace('\n', ' '))
-            if json_match:
-                result = json.loads(json_match.group(1))
-                return result.get('categoria', 'geral').lower(), min(max(result.get('importancia', 3), 1), 5)
-            
-            # Fallback
-            return 'geral', 3
-                
+            # Usa o método específico para categorização
+            return await llm_agent.categorize_text(content)
+                    
         except Exception as e:
-            logger.error(f"Erro ao categorizar com LLM: {str(e)}")
-            # Fallback para categorização básica
+            logger.error(f"Erro ao categorizar com LLM: {e}")
+            # Fallback para o método básico
             return self._categorize_message(content)
         
     async def get_context_messages(self, user_id: int, chat_id: int, query: str = "") -> list:
@@ -401,3 +367,4 @@ class MemoryManager:
         except Exception as e:
             logger.error(f"Erro ao recuperar contexto: {str(e)}", exc_info=True)
             return []
+        

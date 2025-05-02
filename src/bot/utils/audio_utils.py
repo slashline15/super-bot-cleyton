@@ -4,7 +4,7 @@ import logging
 from pathlib import Path
 import tempfile
 import asyncio
-from config.config import Config
+from src.config.config import Config
 
 logger = logging.getLogger('AudioUtils')
 

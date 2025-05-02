@@ -1,4 +1,4 @@
-# tests/test_llm_agent.py
+# python -m tests.test_llm_agent
 import sys
 import os
 import asyncio
