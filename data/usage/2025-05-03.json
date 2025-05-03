@@ -1,0 +1,65 @@
+{
+  "total_tokens": {
+    "input": 2895,
+    "output": 241
+  },
+  "total_cost": 0.03618,
+  "providers": {
+    "openai": {
+      "total_tokens": {
+        "input": 2895,
+        "output": 241
+      },
+      "total_cost": 0.03618,
+      "models": {
+        "gpt-4o": {
+          "total_tokens": {
+            "input": 2895,
+            "output": 241
+          },
+          "total_cost": 0.03618
+        }
+      }
+    }
+  },
+  "sessions": [
+    {
+      "id": "20250503163748",
+      "start_time": "2025-05-03T16:37:48.981447",
+      "tokens": {
+        "input": 2895,
+        "output": 241
+      },
+      "cost": 0.03618,
+      "requests": [
+        {
+          "timestamp": "2025-05-03T16:37:48.984023",
+          "query": "Fala a\u00ed, bich\u00e3o da mem\u00f3ria infinita. Tranquilo, mano? Ouvi dizer que agora sua mem\u00f3ria \u00e9 melhor que ...",
+          "tokens": {
+            "input": 933,
+            "output": 72
+          },
+          "cost": 0.01149
+        },
+        {
+          "timestamp": "2025-05-03T16:39:31.805128",
+          "query": "N\u00e3o foi isso que me disseram... Agora vc sabe que s\u00e9rie que eu gosto. Ou a m\u00fasica do tom odell que e...",
+          "tokens": {
+            "input": 932,
+            "output": 94
+          },
+          "cost": 0.01214
+        },
+        {
+          "timestamp": "2025-05-03T16:41:04.116790",
+          "query": "Porra nenhuma, agora tu n\u00e3o esquece mais de jeito nenhum. Vamos l\u00e1, me fala sobre o que j\u00e1 falamos n...",
+          "tokens": {
+            "input": 1030,
+            "output": 75
+          },
+          "cost": 0.01255
+        }
+      ]
+    }
+  ]
+}

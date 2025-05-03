@@ -4,6 +4,7 @@ import logging
 from datetime import datetime, timedelta
 from src.config.config import Config
 from src.bot.database.db_init import Database
+from .singleton import get_chroma_client
 import os
 import sys
 
@@ -28,17 +29,16 @@ class MemoryManager:
         >>> memory = MemoryManager("./data/chroma")
         >>> stats = await memory.get_category_stats(1, 1)
     """
-    def __init__(self, persist_directory="./chroma_db"):
+    # Modificar o init do MemoryManager
+    def __init__(self, persist_directory="./data/chroma_db"):
         """
         Inicializa o gerenciador de memória usando ChromaDB e SQLite
-        
-        Args:
-            persist_directory (str): Diretório onde o ChromaDB salvará os dados
         """
         logger.info(f"Inicializando MemoryManager com diretório: {persist_directory}")
         
         try:
-            self.client = chromadb.PersistentClient(path=persist_directory)
+            # Usar o singleton ao invés de criar nova instância
+            self.client = get_chroma_client(persist_directory)
             self.messages_collection = self.client.get_or_create_collection(
                 name="messages",
                 metadata={"description": "Histórico de mensagens do chatbot"}
@@ -160,6 +160,54 @@ class MemoryManager:
         except Exception as e:
             logger.error(f"Erro ao adicionar mensagem: {str(e)}", exc_info=True)
             raise
+    
+    def add_message_sync(self,
+                        user_id: int,
+                        chat_id: int,
+                        content: str,
+                        role: str, 
+                        category: str = None,
+                        importance: int = None
+                        ):
+        """
+        Versão síncrona do add_message para o script de reparo
+        """
+        try:
+            # Usa os valores de categoria/importância passados diretamente
+            if category is None:
+                category = 'geral'
+            if importance is None:
+                importance = 3
+                
+            # Adiciona ao ChromaDB
+            embedding_id = f"msg_{user_id}_{datetime.now().timestamp()}"
+            self.messages_collection.add(
+                documents=[content],
+                metadatas=[{
+                    "user_id": str(user_id),
+                    "chat_id": str(chat_id),
+                    "role": role,
+                    "category": category,
+                    "timestamp": datetime.now().isoformat()
+                }],
+                ids=[embedding_id]
+            )
+            
+            # Atualiza o embedding_id no SQLite se já existir
+            self.db.execute_query(
+                """
+                UPDATE messages 
+                SET embedding_id = ? 
+                WHERE user_id = ? AND chat_id = ? AND role = ? AND content = ?
+                """,
+                (embedding_id, user_id, chat_id, role, content)
+            )
+                
+            logger.debug(f"Mensagem adicionada com ID: {embedding_id}")
+            
+        except Exception as e:
+            logger.error(f"Erro ao adicionar mensagem: {str(e)}", exc_info=True)
+            raise
 
     def _categorize_message(self, content: str) -> tuple:
         """Categoriza uma mensagem"""
@@ -232,7 +280,6 @@ class MemoryManager:
             logger.error(f"Erro ao buscar estatísticas: {str(e)}", exc_info=True)
             return {'categories': [], 'total_messages': 0}
         
-    # Em src/bot/memory/memory_manager.py
     async def categorize_with_llm(self, content: str, user_message: bool = True) -> tuple:
         """
         Categoriza uma mensagem usando o LLM.
