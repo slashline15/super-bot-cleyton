@@ -127,7 +127,7 @@ class TelegramLLMHandler:
             # Processa a mensagem com o LLM
             logger.info("Iniciando processamento com LLM...")
             response = await self.llm_agent.process_message(
-                text=user_message,  # CORRIGIDO aqui
+                text=user_message,
                 user_id=user_id,
                 chat_id=chat_id
             )
@@ -143,14 +143,15 @@ class TelegramLLMHandler:
         except Exception as e:
             logger.error(f"Erro detalhado: {str(e)}", exc_info=True)
             
-            # Apaga a mensagem de processamento em caso de erro também
+            # Apaga a mensagem de processamento em caso de erro
             if 'processing_message' in locals() and processing_message:
                 try:
                     await processing_message.delete()
                 except:
                     pass
-                
-        await update.message.reply_text("Desculpe, ocorreu um erro ao processar sua mensagem. Desculpa é o caralho. O GPT é um bosta. Só o o3 que salva (e muito) a primeira geração.")
+                    
+            # MOVIDO PRA DENTRO DO EXCEPT (antes estava fora)
+            await update.message.reply_text("Desculpe, ocorreu um erro ao processar sua mensagem. O GPT o3 é FODAAA.")
             
     async def handle_lembrar(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         """Processa o comando /lembrar [tópico]"""

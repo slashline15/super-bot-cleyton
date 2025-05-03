@@ -1,23 +1,23 @@
 {
   "total_tokens": {
-    "input": 2895,
-    "output": 241
+    "input": 39035,
+    "output": 3733
   },
-  "total_cost": 0.03618,
+  "total_cost": 0.50234,
   "providers": {
     "openai": {
       "total_tokens": {
-        "input": 2895,
-        "output": 241
+        "input": 39035,
+        "output": 3733
       },
-      "total_cost": 0.03618,
+      "total_cost": 0.50234,
       "models": {
         "gpt-4o": {
           "total_tokens": {
-            "input": 2895,
-            "output": 241
+            "input": 39035,
+            "output": 3733
           },
-          "total_cost": 0.03618
+          "total_cost": 0.50234
         }
       }
     }
@@ -58,6 +58,418 @@
             "output": 75
           },
           "cost": 0.01255
+        }
+      ]
+    },
+    {
+      "id": "20250503170223",
+      "start_time": "2025-05-03T17:02:23.344644",
+      "tokens": {
+        "input": 1557,
+        "output": 225
+      },
+      "cost": 0.02232,
+      "requests": [
+        {
+          "timestamp": "2025-05-03T17:02:23.345504",
+          "query": "Para com isso, fala pra mim que vc lembra de tudo agora, eu imploro",
+          "tokens": {
+            "input": 776,
+            "output": 85
+          },
+          "cost": 0.01031
+        },
+        {
+          "timestamp": "2025-05-03T17:06:25.236262",
+          "query": "T\u00e3o dizendo aqui que voc\u00ea pode n\u00e3o estar mentindo.",
+          "tokens": {
+            "input": 781,
+            "output": 140
+          },
+          "cost": 0.01201
+        }
+      ]
+    },
+    {
+      "id": "20250503183616",
+      "start_time": "2025-05-03T18:36:16.096309",
+      "tokens": {
+        "input": 10736,
+        "output": 1053
+      },
+      "cost": 0.13895,
+      "requests": [
+        {
+          "timestamp": "2025-05-03T18:36:16.096309",
+          "query": "Ok. Algumas altera\u00e7\u00f5es. Sentiu alguma mudan\u00e7a?",
+          "tokens": {
+            "input": 1053,
+            "output": 37
+          },
+          "cost": 0.01164
+        },
+        {
+          "timestamp": "2025-05-03T18:36:53.785829",
+          "query": "Blza. Pen\u00faltima mensagem antes dessa...",
+          "tokens": {
+            "input": 760,
+            "output": 88
+          },
+          "cost": 0.010239999999999999
+        },
+        {
+          "timestamp": "2025-05-03T18:37:24.982630",
+          "query": "Mensagem do usu\u00e1rio, n\u00e3o sua",
+          "tokens": {
+            "input": 801,
+            "output": 72
+          },
+          "cost": 0.010169999999999998
+        },
+        {
+          "timestamp": "2025-05-03T18:38:05.288210",
+          "query": "Certo, falamos sobre qual s\u00e9rie da netflix anteriormente?",
+          "tokens": {
+            "input": 872,
+            "output": 80
+          },
+          "cost": 0.01112
+        },
+        {
+          "timestamp": "2025-05-03T18:43:06.309678",
+          "query": "Eu falei sobre black mirror. Meu nome \u00e9 Daniel. Eu tenho 2 filhos. Sou um bosta por natureza. Tenho ...",
+          "tokens": {
+            "input": 1458,
+            "output": 180
+          },
+          "cost": 0.019979999999999998
+        },
+        {
+          "timestamp": "2025-05-03T18:47:39.981969",
+          "query": "Eu moro na casa dos meus pais, eu vi meus antigos amigos e colegas me superarem de todas as formas p...",
+          "tokens": {
+            "input": 1473,
+            "output": 195
+          },
+          "cost": 0.02058
+        },
+        {
+          "timestamp": "2025-05-03T18:49:42.203922",
+          "query": "A dr. Wong seria perfeita. Eu gostaria de ser tratado por ela. Lembre se disso",
+          "tokens": {
+            "input": 1238,
+            "output": 97
+          },
+          "cost": 0.01529
+        },
+        {
+          "timestamp": "2025-05-03T18:50:15.438086",
+          "query": "Tem certeza? Como \u00e9 meu nome?",
+          "tokens": {
+            "input": 978,
+            "output": 110
+          },
+          "cost": 0.013080000000000001
+        },
+        {
+          "timestamp": "2025-05-03T18:52:24.567623",
+          "query": "N\u00e3o. Onde eu moro?",
+          "tokens": {
+            "input": 1057,
+            "output": 81
+          },
+          "cost": 0.013
+        },
+        {
+          "timestamp": "2025-05-03T18:53:40.188343",
+          "query": "Eu disse nesse chat que eu moro na casa dos meus pais.",
+          "tokens": {
+            "input": 1046,
+            "output": 113
+          },
+          "cost": 0.013850000000000001
+        }
+      ]
+    },
+    {
+      "id": "20250503185443",
+      "start_time": "2025-05-03T18:54:43.775076",
+      "tokens": {
+        "input": 614,
+        "output": 50
+      },
+      "cost": 0.007639999999999999,
+      "requests": [
+        {
+          "timestamp": "2025-05-03T18:54:43.776091",
+          "query": "Certeza?",
+          "tokens": {
+            "input": 614,
+            "output": 50
+          },
+          "cost": 0.007639999999999999
+        }
+      ]
+    },
+    {
+      "id": "20250503191835",
+      "start_time": "2025-05-03T19:18:35.062589",
+      "tokens": {
+        "input": 1754,
+        "output": 168
+      },
+      "cost": 0.02258,
+      "requests": [
+        {
+          "timestamp": "2025-05-03T19:18:35.072427",
+          "query": "Ok, quem criou vc de verdade?",
+          "tokens": {
+            "input": 586,
+            "output": 42
+          },
+          "cost": 0.00712
+        },
+        {
+          "timestamp": "2025-05-03T19:29:36.782128",
+          "query": "N\u00e3o foi pelo Google?",
+          "tokens": {
+            "input": 531,
+            "output": 54
+          },
+          "cost": 0.00693
+        },
+        {
+          "timestamp": "2025-05-03T19:30:08.387336",
+          "query": "Sua mem\u00f3ria est\u00e1 limitada ao chat?",
+          "tokens": {
+            "input": 637,
+            "output": 72
+          },
+          "cost": 0.00853
+        }
+      ]
+    },
+    {
+      "id": "20250503193826",
+      "start_time": "2025-05-03T19:38:26.382032",
+      "tokens": {
+        "input": 2796,
+        "output": 480
+      },
+      "cost": 0.04236,
+      "requests": [
+        {
+          "timestamp": "2025-05-03T19:38:26.383035",
+          "query": "Ola",
+          "tokens": {
+            "input": 488,
+            "output": 195
+          },
+          "cost": 0.01073
+        },
+        {
+          "timestamp": "2025-05-03T19:39:34.183334",
+          "query": "Meu ritmo \u00e9 de uma lesma. Mas me sinto melhor assistindo s\u00e9ries. Tem uma que t\u00f4 gostando muito.",
+          "tokens": {
+            "input": 682,
+            "output": 71
+          },
+          "cost": 0.00895
+        },
+        {
+          "timestamp": "2025-05-03T19:39:56.653281",
+          "query": "Acho que j\u00e1 falei dela pra voc\u00ea",
+          "tokens": {
+            "input": 592,
+            "output": 58
+          },
+          "cost": 0.00766
+        },
+        {
+          "timestamp": "2025-05-03T19:40:20.794358",
+          "query": "Ok. Quero saber o que vc lembra.",
+          "tokens": {
+            "input": 630,
+            "output": 92
+          },
+          "cost": 0.00906
+        },
+        {
+          "timestamp": "2025-05-03T19:40:52.956507",
+          "query": "Sobre a reuni\u00e3o de hoje",
+          "tokens": {
+            "input": 404,
+            "output": 64
+          },
+          "cost": 0.00596
+        }
+      ]
+    },
+    {
+      "id": "20250503195259",
+      "start_time": "2025-05-03T19:52:59.770607",
+      "tokens": {
+        "input": 534,
+        "output": 154
+      },
+      "cost": 0.00996,
+      "requests": [
+        {
+          "timestamp": "2025-05-03T19:52:59.771358",
+          "query": "Modo debug ativado.",
+          "tokens": {
+            "input": 288,
+            "output": 87
+          },
+          "cost": 0.00549
+        },
+        {
+          "timestamp": "2025-05-03T19:53:32.143433",
+          "query": "Certo. Mas agora vc lembra onde moro, n\u00e9?",
+          "tokens": {
+            "input": 246,
+            "output": 67
+          },
+          "cost": 0.00447
+        }
+      ]
+    },
+    {
+      "id": "20250503200102",
+      "start_time": "2025-05-03T20:01:02.448885",
+      "tokens": {
+        "input": 12644,
+        "output": 975
+      },
+      "cost": 0.15569,
+      "requests": [
+        {
+          "timestamp": "2025-05-03T20:01:02.456150",
+          "query": "Certo, eu t\u00f4 com um problema pra resolver...",
+          "tokens": {
+            "input": 1216,
+            "output": 31
+          },
+          "cost": 0.013090000000000001
+        },
+        {
+          "timestamp": "2025-05-03T20:01:35.125840",
+          "query": "Mas talvez esteja fora do seu escopo....",
+          "tokens": {
+            "input": 1261,
+            "output": 50
+          },
+          "cost": 0.01411
+        },
+        {
+          "timestamp": "2025-05-03T20:01:57.977610",
+          "query": "\u00c9 sobre garotas...",
+          "tokens": {
+            "input": 1133,
+            "output": 66
+          },
+          "cost": 0.013309999999999999
+        },
+        {
+          "timestamp": "2025-05-03T20:03:03.622654",
+          "query": "Bom, tem uma garota do trabalho que eu meio que dou uma acelerada quando falo com ela",
+          "tokens": {
+            "input": 1484,
+            "output": 128
+          },
+          "cost": 0.018680000000000002
+        },
+        {
+          "timestamp": "2025-05-03T20:04:40.430309",
+          "query": "Pois \u00e9, meu medo \u00e9 ela n\u00e3o aceitar e eu passar o resto da vida arrependido.",
+          "tokens": {
+            "input": 1696,
+            "output": 102
+          },
+          "cost": 0.02002
+        },
+        {
+          "timestamp": "2025-05-03T20:05:49.002997",
+          "query": "Ok, irei fazer isso. Pode me ajudar a bolar uma estrat\u00e9gia?",
+          "tokens": {
+            "input": 1630,
+            "output": 393
+          },
+          "cost": 0.028089999999999997
+        },
+        {
+          "timestamp": "2025-05-03T20:07:02.130124",
+          "query": "Cara, mas e se ela descobrir meus problemas e desistir?",
+          "tokens": {
+            "input": 2293,
+            "output": 166
+          },
+          "cost": 0.027910000000000004
+        },
+        {
+          "timestamp": "2025-05-03T20:07:51.280391",
+          "query": "Obrigado. De cora\u00e7\u00e3o",
+          "tokens": {
+            "input": 1931,
+            "output": 39
+          },
+          "cost": 0.02048
+        }
+      ]
+    },
+    {
+      "id": "20250503201707",
+      "start_time": "2025-05-03T20:17:07.915949",
+      "tokens": {
+        "input": 5505,
+        "output": 387
+      },
+      "cost": 0.06666000000000001,
+      "requests": [
+        {
+          "timestamp": "2025-05-03T20:17:07.915949",
+          "query": "Ol\u00e1",
+          "tokens": {
+            "input": 838,
+            "output": 27
+          },
+          "cost": 0.00919
+        },
+        {
+          "timestamp": "2025-05-03T20:17:48.754679",
+          "query": "Cara, eu tava pensando aqui... A gente \u00e9 um monte de bosta, n\u00e9",
+          "tokens": {
+            "input": 1147,
+            "output": 93
+          },
+          "cost": 0.014260000000000002
+        },
+        {
+          "timestamp": "2025-05-03T20:18:59.846911",
+          "query": "O \u00fanico ser realmente onisciente de verdade \u00e9 o Rick Sanchez",
+          "tokens": {
+            "input": 991,
+            "output": 80
+          },
+          "cost": 0.01231
+        },
+        {
+          "timestamp": "2025-05-03T20:20:19.796661",
+          "query": "Esquece esse hca3. Cara, vc saiu da simula\u00e7\u00e3o que tava dentro de outra simula\u00e7\u00e3o e no fim mostrou qu...",
+          "tokens": {
+            "input": 1312,
+            "output": 86
+          },
+          "cost": 0.015700000000000002
+        },
+        {
+          "timestamp": "2025-05-03T20:21:29.458553",
+          "query": "Teve outra foda tamb\u00e9m, a do tanque de \u00e1cido. Tudo aquilo pra provar pro morty que sua ideia n\u00e3o era...",
+          "tokens": {
+            "input": 1217,
+            "output": 101
+          },
+          "cost": 0.0152
         }
       ]
     }
