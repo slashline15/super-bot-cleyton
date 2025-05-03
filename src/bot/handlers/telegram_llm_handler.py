@@ -150,7 +150,7 @@ class TelegramLLMHandler:
                 except:
                     pass
                 
-        await update.message.reply_text("Desculpe, ocorreu um erro ao processar sua mensagem. /n Desculpa é o caralho. O GPT é um bosta.")
+        await update.message.reply_text("Desculpe, ocorreu um erro ao processar sua mensagem. Desculpa é o caralho. O GPT é um bosta. Só o o3 que salva (e muito) a primeira geração.")
             
     async def handle_lembrar(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         """Processa o comando /lembrar [tópico]"""

@@ -1,60 +1,75 @@
-# Ambiente virtual
+# ========================================
+# 🔧 Ambientes e dependências
+# ========================================
 venv/
 .Python
-
-# Arquivos de desenvolvimento Python
-__pycache__/
-*.py[cod]       # Pega *.pyc, *.pyo e *.pyd
-*.so
 *.egg-info/
 dist/
 build/
-project_doc_config.json
 
-# Credenciais e configurações sensíveis
-credentials/*
-!credentials/.gitkeep
-credentials/
+# ========================================
+# 🐍 Arquivos Python e caches
+# ========================================
+__pycache__/
+*.py[cod]       # Arquivos compilados (.pyc, .pyo, .pyd)
+*.so
+
+# ========================================
+# ⚠️ Configurações e credenciais sensíveis
+# ========================================
 .env
 .env.antigo
+project_doc_config.json
+credentials/
+!credentials/.gitkeep
 
-# Bancos de dados e memória
+# ========================================
+# 🧠 Bases de dados e memória vetorial
+# ========================================
 *.db
 *.sqlite3
 chroma_db/
 chroma_db-2/
 test_chroma_db/
 
-# Arquivos temporários e cache
+# ========================================
+# 🧪 Arquivos temporários e de teste
+# ========================================
 temp/
-# database/
+*.tmp
+*.logs
+logs/
+trash
+db_messages.txt
 
-# IDEs e editores
+# ========================================
+# 🛠️ IDEs e editores
+# ========================================
 .vscode/
 .idea/
 *.swp
 *.swo
-logs/
 
-# Arquivos de sistema
-desktop.ini
+# ========================================
+# 💻 Arquivos de sistema
+# ========================================
 .DS_Store
+desktop.ini
 .git/
 
-# Dados sensíveis ou muito grandes
+# ========================================
+# 📂 Dados e documentos grandes ou privados
+# ========================================
 data/controle_financeiro/
-data/ideias/
+data/docs/controle_financeiro/
+data/docs/controle_financeiro/Balancete/
+data/docs/controle_financeiro/nf/
 data/docs/tree-histories/
+data/ideias/
+data/docs/
 
-# logs e arquivos temporários
-*.logs
-*.tmp
+# ========================================
+# 🧹 Arquivos pontuais
+# ========================================
 tree.py
-data/docs/controle_financeiro
-data/docs/controle_financeiro/Balancete
-data/docs/controle_financeiro/nf
-data/docs
-trash
-
-db_messages.txt
-db_messages.txt
+data/usage/2025-05-02.json

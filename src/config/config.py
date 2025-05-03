@@ -41,7 +41,7 @@ class Config:
     MODEL_NAME = os.getenv('MODEL_NAME', 'gpt-4o')
     SYSTEM_PROMPT = os.getenv('SYSTEM_PROMPT')
     # ----------MODELOS OPENSAI----------
-    # 	
+    # https://platform.openai.com/docs/pricing
     
     # Contexto
     CONTEXT_TIME_WINDOW = int(os.getenv('CONTEXT_TIME_WINDOW', 30))

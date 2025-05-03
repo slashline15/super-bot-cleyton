@@ -1,23 +1,23 @@
 {
   "total_tokens": {
-    "input": 2143,
-    "output": 156
+    "input": 7571,
+    "output": 656
   },
-  "total_cost": 0.02611,
+  "total_cost": 0.09539,
   "providers": {
     "openai": {
       "total_tokens": {
-        "input": 2143,
-        "output": 156
+        "input": 7571,
+        "output": 656
       },
-      "total_cost": 0.02611,
+      "total_cost": 0.09539,
       "models": {
         "gpt-4o": {
           "total_tokens": {
-            "input": 2143,
-            "output": 156
+            "input": 7571,
+            "output": 656
           },
-          "total_cost": 0.02611
+          "total_cost": 0.09539
         }
       }
     }
@@ -49,6 +49,142 @@
             "output": 75
           },
           "cost": 0.0127
+        }
+      ]
+    },
+    {
+      "id": "20250502025501",
+      "start_time": "2025-05-02T02:55:01.583735",
+      "tokens": {
+        "input": 907,
+        "output": 101
+      },
+      "cost": 0.0121,
+      "requests": [
+        {
+          "timestamp": "2025-05-02T02:55:01.584370",
+          "query": "Lembre-se de corrigir o bug da mensagem duplicada",
+          "tokens": {
+            "input": 907,
+            "output": 101
+          },
+          "cost": 0.0121
+        }
+      ]
+    },
+    {
+      "id": "20250502202636",
+      "start_time": "2025-05-02T20:26:36.452777",
+      "tokens": {
+        "input": 1475,
+        "output": 94
+      },
+      "cost": 0.017570000000000002,
+      "requests": [
+        {
+          "timestamp": "2025-05-02T20:26:36.452777",
+          "query": "Fala a\u00ed bix\u00e3o",
+          "tokens": {
+            "input": 760,
+            "output": 35
+          },
+          "cost": 0.00865
+        },
+        {
+          "timestamp": "2025-05-02T20:27:08.446512",
+          "query": "Cara, lembra a serie que eu quero assistir?",
+          "tokens": {
+            "input": 715,
+            "output": 59
+          },
+          "cost": 0.00892
+        }
+      ]
+    },
+    {
+      "id": "20250502203155",
+      "start_time": "2025-05-02T20:31:55.538270",
+      "tokens": {
+        "input": 707,
+        "output": 78
+      },
+      "cost": 0.00941,
+      "requests": [
+        {
+          "timestamp": "2025-05-02T20:31:55.538270",
+          "query": "Como vc sabe que j\u00e1 disse? Vc lembra de j\u00e1 ter dito isso, logo, vc lembra sim.",
+          "tokens": {
+            "input": 707,
+            "output": 78
+          },
+          "cost": 0.00941
+        }
+      ]
+    },
+    {
+      "id": "20250502211021",
+      "start_time": "2025-05-02T21:10:21.596856",
+      "tokens": {
+        "input": 1626,
+        "output": 86
+      },
+      "cost": 0.018840000000000003,
+      "requests": [
+        {
+          "timestamp": "2025-05-02T21:10:21.598161",
+          "query": "Lembra a m\u00fasica que eu tava ouvindo ontem do Tom odell?",
+          "tokens": {
+            "input": 885,
+            "output": 70
+          },
+          "cost": 0.010950000000000001
+        },
+        {
+          "timestamp": "2025-05-02T23:32:08.280086",
+          "query": "Oi",
+          "tokens": {
+            "input": 741,
+            "output": 16
+          },
+          "cost": 0.00789
+        }
+      ]
+    },
+    {
+      "id": "20250502235731",
+      "start_time": "2025-05-02T23:57:31.655316",
+      "tokens": {
+        "input": 713,
+        "output": 141
+      },
+      "cost": 0.011359999999999999,
+      "requests": [
+        {
+          "timestamp": "2025-05-02T23:57:31.655316",
+          "query": "Oi",
+          "tokens": {
+            "input": 230,
+            "output": 7
+          },
+          "cost": 0.00251
+        },
+        {
+          "timestamp": "2025-05-02T23:58:01.503184",
+          "query": "Voc\u00ea t\u00e1 mandando duas mensagens",
+          "tokens": {
+            "input": 290,
+            "output": 46
+          },
+          "cost": 0.00428
+        },
+        {
+          "timestamp": "2025-05-02T23:58:37.896685",
+          "query": "Black mirror?",
+          "tokens": {
+            "input": 193,
+            "output": 88
+          },
+          "cost": 0.004569999999999999
         }
       ]
     }

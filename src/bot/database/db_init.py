@@ -36,19 +36,11 @@ class Database:
         self.initialize_db()  # Garante que a estrutura do banco esteja criada
         logger.info(f"Database inicializado: {db_name}")
     
+    # Em src/bot/database/db_init.py, método connect():
     @contextmanager
     def connect(self):
-        """
-        Context manager para conexão com o banco de dados SQLite.
-
-        Garante que a conexão seja commitada se tudo ocorrer bem ou que ocorra um rollback
-        em caso de erro, além de fechar a conexão ao final do bloco.
-
-        Yields:
-            sqlite3.Connection: Conexão com o banco de dados.
-        """
-        conn = sqlite3.connect(self.db_name)
-        conn.row_factory = sqlite3.Row  # Define o row_factory para sqlite3.Row
+        conn = sqlite3.connect(self.db_name, check_same_thread=False)  # Adicione esse parâmetro aqui
+        conn.row_factory = sqlite3.Row
         try:
             yield conn
             conn.commit()
