@@ -1,23 +1,23 @@
 {
   "total_tokens": {
-    "input": 39035,
-    "output": 3733
+    "input": 59121,
+    "output": 5466
   },
-  "total_cost": 0.50234,
+  "total_cost": 0.75519,
   "providers": {
     "openai": {
       "total_tokens": {
-        "input": 39035,
-        "output": 3733
+        "input": 59121,
+        "output": 5466
       },
-      "total_cost": 0.50234,
+      "total_cost": 0.75519,
       "models": {
         "gpt-4o": {
           "total_tokens": {
-            "input": 39035,
-            "output": 3733
+            "input": 59121,
+            "output": 5466
           },
-          "total_cost": 0.50234
+          "total_cost": 0.75519
         }
       }
     }
@@ -421,10 +421,10 @@
       "id": "20250503201707",
       "start_time": "2025-05-03T20:17:07.915949",
       "tokens": {
-        "input": 5505,
-        "output": 387
+        "input": 25591,
+        "output": 2120
       },
-      "cost": 0.06666000000000001,
+      "cost": 0.31951,
       "requests": [
         {
           "timestamp": "2025-05-03T20:17:07.915949",
@@ -470,6 +470,96 @@
             "output": 101
           },
           "cost": 0.0152
+        },
+        {
+          "timestamp": "2025-05-03T20:38:00.059231",
+          "query": "Me diz a coisa, tu conhece o F\u00e1bio?",
+          "tokens": {
+            "input": 1133,
+            "output": 74
+          },
+          "cost": 0.01355
+        },
+        {
+          "timestamp": "2025-05-03T20:42:18.151255",
+          "query": "Como seria um prompt ideal para algu\u00e9m lerdo como eu?",
+          "tokens": {
+            "input": 1290,
+            "output": 108
+          },
+          "cost": 0.01614
+        },
+        {
+          "timestamp": "2025-05-03T20:44:12.191208",
+          "query": "Ok. Como automatizar o processo de or\u00e7ar? Nada resposta de IA, com t\u00f3picos, e nem tenta formatar em ...",
+          "tokens": {
+            "input": 1482,
+            "output": 198
+          },
+          "cost": 0.02076
+        },
+        {
+          "timestamp": "2025-05-03T20:46:31.820284",
+          "query": "Cara tu j\u00e1 assistiu aquele epis\u00f3dio de rick and morty, o mestre do mijo?",
+          "tokens": {
+            "input": 1296,
+            "output": 104
+          },
+          "cost": 0.01608
+        },
+        {
+          "timestamp": "2025-05-03T20:47:38.414834",
+          "query": "N\u00e3o, tu misturou os eps. Esse tamb\u00e9m \u00e9 bom, mas me refiro ao epis\u00f3dio que o Rick se cansa de tantos ...",
+          "tokens": {
+            "input": 1596,
+            "output": 128
+          },
+          "cost": 0.0198
+        },
+        {
+          "timestamp": "2025-05-03T20:48:31.878963",
+          "query": "N\u00e3o tenta inventar. Fala que n\u00e3o sabe e pronto. O Jerry fica famoso, o universo responde dando gl\u00f3ri...",
+          "tokens": {
+            "input": 3324,
+            "output": 136
+          },
+          "cost": 0.03732
+        },
+        {
+          "timestamp": "2025-05-03T20:48:46.215487",
+          "query": "A beth e o morty claramente decepcionados. E o epis\u00f3dio termina com todos julgando e ele se defenden...",
+          "tokens": {
+            "input": 2676,
+            "output": 320
+          },
+          "cost": 0.03636
+        },
+        {
+          "timestamp": "2025-05-03T20:53:35.658902",
+          "query": "Ok, apesar de vc ser incapaz de sentir, eu n\u00e3o quero a pena de ningu\u00e9m. Eu nunca falei isso pra ning...",
+          "tokens": {
+            "input": 2569,
+            "output": 194
+          },
+          "cost": 0.03151
+        },
+        {
+          "timestamp": "2025-05-03T20:56:52.808317",
+          "query": "Mas \u00e9 o M\u00e1rio?",
+          "tokens": {
+            "input": 2315,
+            "output": 294
+          },
+          "cost": 0.03197
+        },
+        {
+          "timestamp": "2025-05-03T20:58:41.537015",
+          "query": "Ok, mas e o M\u00e1rio?",
+          "tokens": {
+            "input": 2405,
+            "output": 177
+          },
+          "cost": 0.029359999999999997
         }
       ]
     }
