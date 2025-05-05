@@ -126,6 +126,7 @@ class TelegramLLMHandler:
             
             # Processa a mensagem com o LLM
             logger.info("Iniciando processamento com LLM...")
+            await update.message.animation.duration(1000)
             response = await self.llm_agent.process_message(
                 text=user_message,
                 user_id=user_id,

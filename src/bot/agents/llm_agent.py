@@ -323,7 +323,9 @@ class LLMAgent:
             logger.error(f"Erro ao buscar mensagens importantes: {e}")
             return []
 
-    async def process_message(self, text: str, user_id: int, chat_id: int) -> str:
+    async def process_message(self, text: str,
+                              user_id: int,
+                              chat_id: int) -> str:
         """
         Processa uma mensagem do usuário e gera uma resposta usando o modelo LLM.
         """
