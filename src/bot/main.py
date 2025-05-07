@@ -18,6 +18,7 @@ from dotenv import load_dotenv
 from telegram import Update
 from telegram.ext import Application, MessageHandler, CommandHandler, filters
 from src.bot.handlers.telegram_llm_handler import telegram_llm_handler
+from src.bot.handlers.telegram_llm_handler import registrar_cnpj_handlers
 import sys
 from src.config.config import Config
 from src.bot.google_auth_helper import GoogleAuthHelper
@@ -116,6 +117,9 @@ def main():
     
     # Handler para envio dos logs
     application.add_handler(CommandHandler("logs", telegram_llm_handler.handle_logs))
+    
+    # Handler para comando /cnpj
+    registrar_cnpj_handlers(application)
     
     # Handler para mensagens regulares
     application.add_handler(MessageHandler(

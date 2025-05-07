@@ -73,3 +73,6 @@ data/docs/
 # ========================================
 tree.py
 data/usage/2025-05-02.json
+data/usage/2025-05-07.json
+data/usage/2025-05-06.json
+tests/test_handle_memory.py
