@@ -4,11 +4,84 @@ import logging
 from datetime import datetime, timedelta
 from src.config.config import Config
 from src.bot.database.db_init import Database
-from .singleton import get_chroma_client
+from src.bot.memory.chroma_manager import ChromaManager
 import os
+import threading
+import json
 import sys
 
 logger = logging.getLogger('MemoryManager')
+
+def debug_memory_state(user_id, chat_id):
+    """Mostra o estado atual da memória"""
+    db = Database()
+    
+    # Conta no SQLite
+    sql_count = db.execute_query(
+        "SELECT COUNT(*) as count FROM messages WHERE user_id=? AND chat_id=?",
+        (user_id, chat_id)
+    )[0]['count']
+    
+    # Conta no ChromaDB
+    client = ChromaManager.get_client()
+    collection = client.get_collection("messages")
+    chroma_results = collection.query(
+        query_texts=[""],
+        where={"user_id": str(user_id), "chat_id": str(chat_id)},
+        include=["metadatas"]
+    )
+    chroma_count = len(chroma_results['ids'][0]) if chroma_results['ids'] else 0
+    
+    print(f"SQLite: {sql_count} mensagens")
+    print(f"ChromaDB: {chroma_count} documentos")
+    if sql_count != chroma_count:
+        print("🔥 ATENÇÃO: Divergência detectada!")
+
+def debug_full_state(self, user_id, chat_id):
+    """Debug completo pra ver onde tá a merda"""
+    print(f"\n=== DEBUG FULL STATE ===")
+    print(f"User: {user_id}, Chat: {chat_id}")
+    
+    # SQLite
+    try:
+        sql_count = self.db.execute_query(
+            "SELECT COUNT(*) as count FROM messages WHERE user_id=? AND chat_id=?",
+            (user_id, chat_id)
+        )[0]['count']
+        print(f"SQLite: {sql_count} mensagens")
+        
+        # Últimas 5 mensagens do SQLite
+        last_msgs = self.db.execute_query(
+            "SELECT id, content, embedding_id, timestamp FROM messages WHERE user_id=? AND chat_id=? ORDER BY timestamp DESC LIMIT 5",
+            (user_id, chat_id)
+        )
+        for msg in last_msgs:
+            print(f"  {msg['id']}: {msg['content'][:50]}... (embedding_id: {msg['embedding_id']})")
+    except Exception as e:
+        print(f"SQLite erro: {e}")
+    
+    # ChromaDB
+    try:
+        chroma_results = self.messages_collection.query(
+            query_texts=[""],
+            where={
+                "user_id": str(user_id),
+                "chat_id": str(chat_id)
+            },
+            include=["metadatas"],
+            n_results=999
+        )
+        
+        if chroma_results['ids']:
+            print(f"ChromaDB: {len(chroma_results['ids'][0])} documentos")
+            for i, id_ in enumerate(chroma_results['ids'][0][:5]):
+                print(f"  {id_}: {chroma_results['metadatas'][0][i]}")
+        else:
+            print("ChromaDB: 0 documentos")
+    except Exception as e:
+        print(f"ChromaDB erro: {e}")
+    
+    print("========================\n")
 
 class MemoryManager:
     """
@@ -38,13 +111,14 @@ class MemoryManager:
         
         try:
             # Usar o singleton ao invés de criar nova instância
-            self.client = get_chroma_client(persist_directory)
+            self.client = ChromaManager.get_client(persist_directory)
             self.messages_collection = self.client.get_or_create_collection(
                 name="messages",
                 metadata={"description": "Histórico de mensagens do chatbot"}
             )
             self.db = Database()
             logger.info("MemoryManager inicializado com sucesso")
+            self._lock = threading.Lock()
             
         except Exception as e:
             logger.error(f"Erro ao inicializar MemoryManager: {str(e)}", exc_info=True)
@@ -119,47 +193,55 @@ class MemoryManager:
             return []
 
     async def add_message(self, user_id: int, chat_id: int, content: str, role: str):
-        """
-        Adiciona uma mensagem à memória (ChromaDB e SQLite)
-        
-        Args:
-            user_id (int): ID do usuário
-            chat_id (int): ID do chat
-            content (str): Conteúdo da mensagem
-            role (str): Papel da mensagem (user/assistant)
-        """
-        try:
-            category, importance = await self.categorize_with_llm(content, role=="user")
-            
-            # Adiciona ao ChromaDB
-            embedding_id = f"msg_{user_id}_{datetime.now().timestamp()}"
-            self.messages_collection.add(
-                documents=[content],
-                metadatas=[{
-                    "user_id": str(user_id),  # Convertido para string
-                    "chat_id": str(chat_id),  # Convertido para string
-                    "role": role,
-                    "category": category,
-                    "timestamp": datetime.now().isoformat()
-                }],
-                ids=[embedding_id]
-            )
-            
-            # Adiciona ao SQLite
-            self.db.execute_query(
-                """
-                INSERT INTO messages 
-                (user_id, chat_id, role, content, category, importance, embedding_id)
-                VALUES (?, ?, ?, ?, ?, ?, ?)
-                """,
-                (user_id, chat_id, role, content, category, importance, embedding_id)
-            )
-            
-            logger.debug(f"Mensagem adicionada com ID: {embedding_id}")
-            
-        except Exception as e:
-            logger.error(f"Erro ao adicionar mensagem: {str(e)}", exc_info=True)
-            raise
+        """Adiciona uma mensagem de forma atômica (sem perder nada)"""
+        with self._lock:  # Trava tudo enquanto salva
+            try:
+                # 1. Categoriza a mensagem
+                category, importance = await self.categorize_with_llm(content, role=="user")
+                
+                # 2. Gera ID único
+                import time
+                embedding_id = f"msg_{user_id}_{int(time.time()*1000)}"
+                
+                # 3. PRIMEIRO salva no SQLite
+                self.db.execute_query(
+                    """
+                    INSERT INTO messages 
+                    (user_id, chat_id, role, content, category, importance, embedding_id)
+                    VALUES (?, ?, ?, ?, ?, ?, ?)
+                    """,
+                    (user_id, chat_id, role, content, category, importance, embedding_id)
+                )
+                
+                # 4. DEPOIS salva no ChromaDB
+                self.messages_collection.add(
+                    documents=[content],
+                    metadatas=[{
+                        "user_id": str(user_id),
+                        "chat_id": str(chat_id),
+                        "role": role,
+                        "category": category,
+                        "timestamp": datetime.now().isoformat()
+                    }],
+                    ids=[embedding_id]
+                )
+                
+                logger.debug(f"Mensagem {embedding_id} salva com sucesso")
+                return embedding_id
+                
+            except Exception as e:
+                # Se o ChromaDB falhou, apaga do SQLite
+                logger.error(f"MERDA! Erro ao salvar mensagem: {e}")
+                try:
+                    self.db.execute_query(
+                        "DELETE FROM messages WHERE embedding_id = ?",
+                        (embedding_id,)
+                    )
+                    logger.info("Limpeza feita, SQLite restaurado")
+                except:
+                    logger.error("TA FODA! Nem conseguiu limpar. Vai precisar arrumar na mão.")
+                raise
+
     
     def add_message_sync(self,
                         user_id: int,

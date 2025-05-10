@@ -1,4 +1,4 @@
-# fix_memory.py
+# python fix_memory.py
 import os
 import sqlite3
 import json

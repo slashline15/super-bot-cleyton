@@ -323,114 +323,33 @@ class LLMAgent:
             logger.error(f"Erro ao buscar mensagens importantes: {e}")
             return []
 
-    async def process_message(self, text: str,
-                              user_id: int,
-                              chat_id: int) -> str:
-        """
-        Processa uma mensagem do usuário e gera uma resposta usando o modelo LLM.
-        """
+    async def process_message(self, text: str, user_id: int, chat_id: int) -> str:
+        """Processa uma mensagem sem fazer cagada"""
         try:
-            # 1. Adiciona mensagem do usuário à memória
+            # 1. Adiciona mensagem do usuário
             await self.memory.add_message(user_id, chat_id, text, role="user")
             
-            # 2. Recupera contexto relevante
+            # 2. Pega contexto
             raw_ctx = await self.get_context_messages(user_id, chat_id, query=text)
             
-            # DEBUG 1: O que exatamente tá vindo do context?
-            logger.info(f"Obtido raw_ctx com {len(raw_ctx)} items")
-            for i, item in enumerate(raw_ctx[:2]):  # Primeiros 2 itens
-                logger.info(f"raw_ctx[{i}] = {str(item)[:100]}...")
+            # 3. Formata pra quem quer que seja o provedor
+            messages = format_context_for_provider(
+                ctx_messages=raw_ctx,
+                provider=self._client.provider,
+                system_prompt=self.system_prompt,
+                user_message=text
+            )
             
-            # 3. Formata contexto para o formato do provedor
-            # Simplificado por enquanto até debugarmos
-            formatted_ctx = []
-            for item in raw_ctx:
-                # Tenta extrair info básica do jeito mais robusto possível
-                role = "user"
-                content = ""
-                
-                if isinstance(item, dict):
-                    # Tenta todas as possíveis chaves
-                    role = item.get('role', 'user')
-                    # Se for Chroma ou LangChain, pode ter formato diferente
-                    if 'content' in item:
-                        content = item.get('content', '')
-                    elif 'page_content' in item:
-                        content = item.get('page_content', '')
-                    elif 'metadata' in item and 'content' in item.get('metadata', {}):
-                        content = item.get('metadata', {}).get('content', '')
-                    else:
-                        # Última tentativa - pega o primeiro valor não-nulo
-                        for k, v in item.items():
-                            if isinstance(v, str) and v:
-                                content = v
-                                break
-                else:
-                    # Se não for dict, tenta converter para string
-                    content = str(item)
-                
-                # Ajusta o papel para o formato do provedor
-                if self._client.provider == 'gemini' and role == 'assistant':
-                    role = 'model'
-                
-                # Finalmente, adiciona ao contexto formatado
-                if self._client.provider == 'gemini':
-                    formatted_ctx.append({"role": role, "parts": [{"text": content}]})
-                else:
-                    formatted_ctx.append({"role": role, "content": content})
-            
-            # DEBUG 2: Mostra o que virou depois da formatação
-            logger.info(f"Formatado para {len(formatted_ctx)} mensagens")
-            for i, item in enumerate(formatted_ctx[:2]):
-                logger.info(f"formatted_ctx[{i}] = {str(item)}")
-            
-            # 4. Monta mensagens finais para o LLM
-            if self._client.provider == 'gemini':
-                # Para Gemini
-                messages_for_llm = formatted_ctx.copy()
-                messages_for_llm.append({"role": "user", "parts": [{"text": text}]})
-                
-                # DEBUG 3: Mostra o payload final para Gemini
-                logger.info("===== PAYLOAD FINAL PARA GEMINI =====")
-                logger.info(f"system_prompt: {self.system_prompt[:30]}...")
-                for i, msg in enumerate(messages_for_llm):
-                    parts = msg.get('parts', [])
-                    text_content = parts[0].get('text', '') if parts else ''
-                    logger.info(f"Mensagem {i}: role={msg.get('role')}, text={text_content[:30]}...")
-                logger.info("=====================================")
-                
-                # Chama cliente Gemini
-                answer = await self._client.chat(messages_for_llm, system_prompt=self.system_prompt)
-            else:
-                # Para OpenAI
-                messages_for_llm = [
-                    {"role": "system", "content": self.system_prompt}
-                ]
-                messages_for_llm.extend(formatted_ctx)
-                messages_for_llm.append({"role": "user", "content": text})
-                
-                # DEBUG 4: Mostra o payload final para OpenAI
-                logger.info("===== PAYLOAD FINAL PARA OPENAI =====")
-                for i, msg in enumerate(messages_for_llm):
-                    logger.info(f"Mensagem {i}: role={msg.get('role')}, content={msg.get('content', '')[:30]}...")
-                logger.info("======================================")
-                
-                # Chama cliente OpenAI
-                answer = await self._client.chat(messages_for_llm)
+            # 4. Chama a API (sem firula)
+            response = await self._client.chat(messages)
             
             # 5. Conta tokens (simplificado)
-            input_tokens = 0
-            for msg in messages_for_llm:
-                if 'content' in msg:
-                    input_tokens += self.count_tokens(msg['content'])
-                elif 'parts' in msg and msg['parts']:
-                    input_tokens += self.count_tokens(msg['parts'][0].get('text', ''))
+            input_tokens = sum(self.count_tokens(str(m)) for m in messages)
+            output_tokens = self.count_tokens(response)
             
-            output_tokens = self.count_tokens(answer)
-            
-            # 6. Rastrea uso
+            # 6. Registra uso
             tracker = TokenTracker()
-            usage = tracker.track(
+            tracker.track(
                 provider=self._client.provider,
                 model=self._client.name,
                 input_tokens=input_tokens,
@@ -438,16 +357,15 @@ class LLMAgent:
                 query=text
             )
             
-            # 7. Log e adiciona resposta à memória
-            logger.info(f"Tokens: {input_tokens} entrada, {output_tokens} saída, Custo: ${usage['cost']:.6f}")
-            await self.memory.add_message(user_id, chat_id, answer, role="assistant")
+            # 7. Salva resposta
+            await self.memory.add_message(user_id, chat_id, response, role="assistant")
             
-            # 8. Retorna resposta
-            return answer
+            return response
             
         except Exception as e:
-            logger.error(f"Erro ao processar mensagem: {e}", exc_info=True)
-            return "Essa memória virou um quebra-cabeça multidimensional. Tenta de novo que eu vou ajeitar a bagunça cerebral aqui."
+            logger.error(f"Puta merda, deu erro: {e}")
+            return "Deu uma treta aqui, mas tô vivo. Tenta de novo aí."
+
             
     async def categorize_text(self, text: str) -> tuple:
         """
