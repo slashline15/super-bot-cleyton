@@ -1,0 +1,479 @@
+{
+  "total_tokens": {
+    "input": 31812,
+    "output": 5138
+  },
+  "total_cost": 0.4722599999999999,
+  "providers": {
+    "openai": {
+      "total_tokens": {
+        "input": 31812,
+        "output": 5138
+      },
+      "total_cost": 0.4722599999999999,
+      "models": {
+        "gpt-4o": {
+          "total_tokens": {
+            "input": 31812,
+            "output": 5138
+          },
+          "total_cost": 0.4722599999999999
+        }
+      }
+    }
+  },
+  "sessions": [
+    {
+      "id": "20250509215703",
+      "start_time": "2025-05-09T21:57:03.319478",
+      "tokens": {
+        "input": 17145,
+        "output": 1744
+      },
+      "cost": 0.22377000000000002,
+      "requests": [
+        {
+          "timestamp": "2025-05-09T21:57:03.320478",
+          "query": "Fala ae, irm\u00e3o",
+          "tokens": {
+            "input": 666,
+            "output": 39
+          },
+          "cost": 0.00783
+        },
+        {
+          "timestamp": "2025-05-09T21:58:00.366525",
+          "query": "Me explica o que s\u00e3o dumps. Tem um site que vende, parece um c\u00f3digo pra algo.",
+          "tokens": {
+            "input": 729,
+            "output": 142
+          },
+          "cost": 0.011549999999999998
+        },
+        {
+          "timestamp": "2025-05-09T21:59:39.412868",
+          "query": "Ok. Eu queria um database vazados do serasa. Isso \u00e9 um dump?",
+          "tokens": {
+            "input": 762,
+            "output": 126
+          },
+          "cost": 0.0114
+        },
+        {
+          "timestamp": "2025-05-09T22:02:06.776259",
+          "query": "Como eu posso vetorizar documentos para o seu banco de dados do chromadb?",
+          "tokens": {
+            "input": 899,
+            "output": 366
+          },
+          "cost": 0.01997
+        },
+        {
+          "timestamp": "2025-05-09T22:56:44.897552",
+          "query": "Ok, vamos fazer alguns testes para saber se est\u00e1 tudo ok antes de seguirmos com as fun\u00e7\u00f5es de embedd...",
+          "tokens": {
+            "input": 1364,
+            "output": 305
+          },
+          "cost": 0.02279
+        },
+        {
+          "timestamp": "2025-05-09T22:57:34.938448",
+          "query": "Primeiro, testar mem\u00f3rias. Fa\u00e7a um resumo de nossas primeiras intera\u00e7\u00f5es.",
+          "tokens": {
+            "input": 1406,
+            "output": 103
+          },
+          "cost": 0.01715
+        },
+        {
+          "timestamp": "2025-05-09T23:00:02.104105",
+          "query": "J\u00e1 passamos dessa, cara. No fim, era s\u00f3 a context_window que em que vc mantinha esse discurso, mas d...",
+          "tokens": {
+            "input": 1485,
+            "output": 160
+          },
+          "cost": 0.01965
+        },
+        {
+          "timestamp": "2025-05-09T23:04:28.523343",
+          "query": "Ok, vamos por aqui.",
+          "tokens": {
+            "input": 440,
+            "output": 36
+          },
+          "cost": 0.0054800000000000005
+        },
+        {
+          "timestamp": "2025-05-09T23:05:34.182415",
+          "query": "Eu moro na casa do...",
+          "tokens": {
+            "input": 1567,
+            "output": 19
+          },
+          "cost": 0.01624
+        },
+        {
+          "timestamp": "2025-05-09T23:05:59.848072",
+          "query": "Aqui \u00e9 o Daniel",
+          "tokens": {
+            "input": 1450,
+            "output": 53
+          },
+          "cost": 0.01609
+        },
+        {
+          "timestamp": "2025-05-09T23:06:49.673290",
+          "query": "N\u00e3o, t\u00e1 tranquilo. Gostei da resposta. Mas vc sabe onde eu moro, n\u00e9...",
+          "tokens": {
+            "input": 1254,
+            "output": 51
+          },
+          "cost": 0.014070000000000001
+        },
+        {
+          "timestamp": "2025-05-09T23:07:13.254309",
+          "query": "Na casa dos meus pais, caralho",
+          "tokens": {
+            "input": 1420,
+            "output": 109
+          },
+          "cost": 0.01747
+        },
+        {
+          "timestamp": "2025-05-09T23:08:08.581454",
+          "query": "Cara, eu pedi pra vc salvar algumas tarefas pra me lembrar depois, Quais s\u00e3o elas?",
+          "tokens": {
+            "input": 1485,
+            "output": 115
+          },
+          "cost": 0.018300000000000004
+        },
+        {
+          "timestamp": "2025-05-09T23:10:11.864864",
+          "query": "Olha a\u00ed... vc t\u00e1 recuperando as informa\u00e7\u00f5es. Para de gra\u00e7a, ou vou refazer seu prompt para vc ser o ...",
+          "tokens": {
+            "input": 2218,
+            "output": 120
+          },
+          "cost": 0.02578
+        }
+      ]
+    },
+    {
+      "id": "20250509232508",
+      "start_time": "2025-05-09T23:25:08.260996",
+      "tokens": {
+        "input": 2376,
+        "output": 114
+      },
+      "cost": 0.027180000000000003,
+      "requests": [
+        {
+          "timestamp": "2025-05-09T23:25:08.274580",
+          "query": "Ta certo, bix\u00e3o, quer brigar com seu mestre?",
+          "tokens": {
+            "input": 1221,
+            "output": 60
+          },
+          "cost": 0.01401
+        },
+        {
+          "timestamp": "2025-05-09T23:26:52.601811",
+          "query": "Sabe aquela garota que eu queria falar com ela?",
+          "tokens": {
+            "input": 1155,
+            "output": 54
+          },
+          "cost": 0.013170000000000001
+        }
+      ]
+    },
+    {
+      "id": "20250509232834",
+      "start_time": "2025-05-09T23:28:34.981181",
+      "tokens": {
+        "input": 1712,
+        "output": 131
+      },
+      "cost": 0.02105,
+      "requests": [
+        {
+          "timestamp": "2025-05-09T23:28:34.988689",
+          "query": "Ent\u00e3o cara, agora tem outra.",
+          "tokens": {
+            "input": 856,
+            "output": 41
+          },
+          "cost": 0.00979
+        },
+        {
+          "timestamp": "2025-05-09T23:29:10.948861",
+          "query": "Sei l\u00e1, o que vc acha?",
+          "tokens": {
+            "input": 856,
+            "output": 90
+          },
+          "cost": 0.01126
+        }
+      ]
+    },
+    {
+      "id": "20250509233932",
+      "start_time": "2025-05-09T23:39:32.613832",
+      "tokens": {
+        "input": 3233,
+        "output": 214
+      },
+      "cost": 0.03875,
+      "requests": [
+        {
+          "timestamp": "2025-05-09T23:39:32.616831",
+          "query": "Vejamos... quem \u00e9 vc agora?",
+          "tokens": {
+            "input": 883,
+            "output": 63
+          },
+          "cost": 0.01072
+        },
+        {
+          "timestamp": "2025-05-09T23:39:53.892210",
+          "query": "Como \u00e9 seu nome?",
+          "tokens": {
+            "input": 871,
+            "output": 42
+          },
+          "cost": 0.009970000000000001
+        },
+        {
+          "timestamp": "2025-05-09T23:40:14.600949",
+          "query": "Seu nome \u00e9 cleyton porra",
+          "tokens": {
+            "input": 833,
+            "output": 31
+          },
+          "cost": 0.009260000000000001
+        },
+        {
+          "timestamp": "2025-05-09T23:40:50.359384",
+          "query": "Que tal ir tomar no seu cu",
+          "tokens": {
+            "input": 433,
+            "output": 40
+          },
+          "cost": 0.005529999999999999
+        },
+        {
+          "timestamp": "2025-05-09T23:41:27.444148",
+          "query": "Zuera, mano. Tava s\u00f3 vendo o que vc responderia em casos de viol\u00eancia verbal extrema.",
+          "tokens": {
+            "input": 213,
+            "output": 38
+          },
+          "cost": 0.00327
+        }
+      ]
+    },
+    {
+      "id": "20250509234335",
+      "start_time": "2025-05-09T23:43:35.485232",
+      "tokens": {
+        "input": 314,
+        "output": 47
+      },
+      "cost": 0.00455,
+      "requests": [
+        {
+          "timestamp": "2025-05-09T23:43:35.487235",
+          "query": "Ok. Sabe a mina que estavamos falando?",
+          "tokens": {
+            "input": 314,
+            "output": 47
+          },
+          "cost": 0.00455
+        }
+      ]
+    },
+    {
+      "id": "20250509234614",
+      "start_time": "2025-05-09T23:46:14.410252",
+      "tokens": {
+        "input": 560,
+        "output": 169
+      },
+      "cost": 0.01067,
+      "requests": [
+        {
+          "timestamp": "2025-05-09T23:46:14.412249",
+          "query": "Certo, espero que bole alguma frase sobre o chefe dela.",
+          "tokens": {
+            "input": 284,
+            "output": 87
+          },
+          "cost": 0.00545
+        },
+        {
+          "timestamp": "2025-05-09T23:46:53.885928",
+          "query": "Cara, o nome dele \u00e9 yoshiaki e ele era meu antigo chefe.",
+          "tokens": {
+            "input": 276,
+            "output": 82
+          },
+          "cost": 0.005220000000000001
+        }
+      ]
+    },
+    {
+      "id": "20250509234801",
+      "start_time": "2025-05-09T23:48:01.010312",
+      "tokens": {
+        "input": 311,
+        "output": 102
+      },
+      "cost": 0.00617,
+      "requests": [
+        {
+          "timestamp": "2025-05-09T23:48:01.012306",
+          "query": "Eu pensei em fazer alguma piada com o nome dele",
+          "tokens": {
+            "input": 311,
+            "output": 102
+          },
+          "cost": 0.00617
+        }
+      ]
+    },
+    {
+      "id": "20250509235219",
+      "start_time": "2025-05-09T23:52:19.986346",
+      "tokens": {
+        "input": 104,
+        "output": 33
+      },
+      "cost": 0.0020299999999999997,
+      "requests": [
+        {
+          "timestamp": "2025-05-09T23:52:19.988330",
+          "query": "To entendendo nada, mano",
+          "tokens": {
+            "input": 104,
+            "output": 33
+          },
+          "cost": 0.0020299999999999997
+        }
+      ]
+    },
+    {
+      "id": "20250509235301",
+      "start_time": "2025-05-09T23:53:01.823303",
+      "tokens": {
+        "input": 610,
+        "output": 131
+      },
+      "cost": 0.01003,
+      "requests": [
+        {
+          "timestamp": "2025-05-09T23:53:01.825296",
+          "query": "Voc\u00ea \u00e9 criativo?",
+          "tokens": {
+            "input": 160,
+            "output": 43
+          },
+          "cost": 0.00289
+        },
+        {
+          "timestamp": "2025-05-09T23:53:37.612219",
+          "query": "Um nome para o meu terceiro filho. O primeiro \u00e9 Gohan e o Segundo \u00e9 Goten.",
+          "tokens": {
+            "input": 244,
+            "output": 29
+          },
+          "cost": 0.00331
+        },
+        {
+          "timestamp": "2025-05-09T23:54:03.025110",
+          "query": "Mas ele \u00e9 filho do vegeta.",
+          "tokens": {
+            "input": 206,
+            "output": 59
+          },
+          "cost": 0.0038299999999999996
+        }
+      ]
+    },
+    {
+      "id": "20250509235614",
+      "start_time": "2025-05-09T23:56:14.093327",
+      "tokens": {
+        "input": 5447,
+        "output": 2453
+      },
+      "cost": 0.12806,
+      "requests": [
+        {
+          "timestamp": "2025-05-09T23:56:14.095369",
+          "query": "Ok, se for menina, pode ser bulma.",
+          "tokens": {
+            "input": 231,
+            "output": 52
+          },
+          "cost": 0.00387
+        },
+        {
+          "timestamp": "2025-05-09T23:59:21.687105",
+          "query": "Cara, vc tem algum system_prompt?",
+          "tokens": {
+            "input": 478,
+            "output": 89
+          },
+          "cost": 0.007449999999999999
+        },
+        {
+          "timestamp": "2025-05-10T00:00:21.006734",
+          "query": "Ok, onde entra esse par\u00e2metro na requisi\u00e7\u00e3o para que eu insira o meu system_prompt personalizado?",
+          "tokens": {
+            "input": 482,
+            "output": 355
+          },
+          "cost": 0.01547
+        },
+        {
+          "timestamp": "2025-05-10T00:01:47.624386",
+          "query": "Como organizar um projeto complexo, com v\u00e1rios arquivos e classes e fun\u00e7\u00f5es? Tipo, uma visualiza\u00e7\u00e3o?",
+          "tokens": {
+            "input": 693,
+            "output": 559
+          },
+          "cost": 0.0237
+        },
+        {
+          "timestamp": "2025-05-10T00:03:02.162664",
+          "query": "O seu Markdown t\u00e1 uma bosta. Eu vejo todos os asteriscos e `  que vc tenta formatar. Tenta HTML.",
+          "tokens": {
+            "input": 1081,
+            "output": 549
+          },
+          "cost": 0.027280000000000002
+        },
+        {
+          "timestamp": "2025-05-10T00:03:45.002945",
+          "query": "Ainda n\u00e3o. Acho que o Telegram usa o Markdown legacy, que acho que \u00e9 mais simples.",
+          "tokens": {
+            "input": 1278,
+            "output": 428
+          },
+          "cost": 0.025619999999999997
+        },
+        {
+          "timestamp": "2025-05-10T00:04:13.273675",
+          "query": "Tenta usar s\u00f3 um asterisco para deixar palavras em negrito",
+          "tokens": {
+            "input": 1204,
+            "output": 421
+          },
+          "cost": 0.024669999999999997
+        }
+      ]
+    }
+  ]
+}

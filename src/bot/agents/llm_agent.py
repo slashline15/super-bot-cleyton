@@ -173,7 +173,7 @@ class LLMAgent:
     
     db: Database = field(default_factory=Database)
     memory: MemoryManager = field(default_factory=MemoryManager)
-    system_prompt: str = field(default=Config.SYSTEM_PROMPT_CLEYTON)
+    system_prompt: str = field(default=Config.SYSTEM_PROMPT)
     _client: LLMClient = field(init=False)
     
     def __post_init__(self) -> None:

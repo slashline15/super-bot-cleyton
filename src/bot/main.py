@@ -134,7 +134,7 @@ def main():
     print("🤖Bot iniciado!")
     print("❌Pressione Ctrl+C para parar.")
     application.run_polling(allowed_updates=Update.ALL_TYPES)
-    logging.info("Bot iniciado!")
+    logging.info("Bot finalizado. Morri!")
 
 if __name__ == '__main__':
     main()

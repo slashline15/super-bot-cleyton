@@ -1,4 +1,4 @@
-# tests/test_database.py
+# python -m tests.test_database
 import sqlite3
 import datetime
 import os

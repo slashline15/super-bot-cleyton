@@ -1,4 +1,4 @@
-# tests/test_document_manager.py
+# python -m tests.test_document_manager
 import sys
 import os
 import logging

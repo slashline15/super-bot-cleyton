@@ -1,3 +1,5 @@
+# python -m tests.test_db
+
 import sqlite3
 
 # Conecta ao banco de dados

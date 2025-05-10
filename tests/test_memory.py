@@ -1,4 +1,4 @@
-# tests/test_memory.py
+# python -m tests.test_memory
 import asyncio
 import pytest
 from datetime import datetime

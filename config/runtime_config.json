@@ -1,8 +1,8 @@
 {
   "llm_provider": "openai",
   "model": "gpt-4o",
-  "temperature": 1.5,
-  "max_tokens": 4000,
-  "custom_prompt": null,
+  "temperature": 1.0,
+  "max_tokens": 1000,
+  "custom_prompt": false,
   "debug_mode": false
 }

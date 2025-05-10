@@ -1,0 +1,76 @@
+{
+  "total_tokens": {
+    "input": 4718,
+    "output": 246
+  },
+  "total_cost": 0.054560000000000004,
+  "providers": {
+    "openai": {
+      "total_tokens": {
+        "input": 4718,
+        "output": 246
+      },
+      "total_cost": 0.054560000000000004,
+      "models": {
+        "gpt-4o": {
+          "total_tokens": {
+            "input": 4718,
+            "output": 246
+          },
+          "total_cost": 0.054560000000000004
+        }
+      }
+    }
+  },
+  "sessions": [
+    {
+      "id": "20250510001401",
+      "start_time": "2025-05-10T00:14:01.411813",
+      "tokens": {
+        "input": 3128,
+        "output": 180
+      },
+      "cost": 0.036680000000000004,
+      "requests": [
+        {
+          "timestamp": "2025-05-10T00:14:01.414511",
+          "query": "Nada, Preciso corrigir isso. Alguma sugest\u00e3o? Sem text\u00e3o, por favor",
+          "tokens": {
+            "input": 1030,
+            "output": 102
+          },
+          "cost": 0.01336
+        },
+        {
+          "timestamp": "2025-05-10T00:15:24.991116",
+          "query": "Ok, guarda essa informa\u00e7\u00f5es do seu diret\u00f3rio principal:\n\n(venv) PS D:\\python\\bot\\super-bot-cleyton> ...",
+          "tokens": {
+            "input": 2098,
+            "output": 78
+          },
+          "cost": 0.02332
+        }
+      ]
+    },
+    {
+      "id": "20250510002226",
+      "start_time": "2025-05-10T00:22:26.527409",
+      "tokens": {
+        "input": 1590,
+        "output": 66
+      },
+      "cost": 0.01788,
+      "requests": [
+        {
+          "timestamp": "2025-05-10T00:22:26.530912",
+          "query": "S\u00e9rio?",
+          "tokens": {
+            "input": 1590,
+            "output": 66
+          },
+          "cost": 0.01788
+        }
+      ]
+    }
+  ]
+}

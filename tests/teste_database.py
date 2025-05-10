@@ -1,4 +1,4 @@
-# tests/test_database.py
+# python -m tests.teste_database
 import sys
 import os
 import sqlite3
