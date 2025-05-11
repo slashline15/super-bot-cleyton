@@ -6,6 +6,7 @@ venv/
 *.egg-info/
 dist/
 build/
+.python-version
 
 # ========================================
 # 🐍 Arquivos Python e caches
@@ -77,3 +78,5 @@ data/usage/2025-05-07.json
 data/usage/2025-05-06.json
 tests/test_handle_memory.py
 *.bin
+
+data/usage/2025-05-11.json
