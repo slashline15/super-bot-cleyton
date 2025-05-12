@@ -12,6 +12,9 @@ from src.bot.utils.token_tracker import TokenTracker
 import logging
 import asyncio
 import os
+import json
+import datetime
+from src.bot.memory.format_utils import format_context_for_provider
 
 logger = logging.getLogger('TelegramLLMHandler')
 
@@ -203,12 +206,12 @@ class TelegramLLMHandler:
             """
             
             # Gera o resumo
-            summary_response = await self.llm_agent._call_openai_api([
+            summary_response_text = await self.llm_agent._client.chat([
                 {"role": "system", "content": "Você é um assistente que resume memórias sobre tópicos específicos."},
                 {"role": "user", "content": summary_prompt}
             ])
             
-            summary = summary_response.choices[0].message.content
+            summary = summary_response_text
             
             # Formata a resposta final
             response = f"🧠 **Memórias sobre '{topic}'**\n\n{summary}"
@@ -224,7 +227,7 @@ class TelegramLLMHandler:
         """Liga/desliga o modo debug"""
         user_id = update.effective_user.id
         args = context.args
-        
+
         if not args:
             # Sem argumento mostra estado atual
             is_debug = self.debug_users.get(user_id, False)
@@ -233,7 +236,7 @@ class TelegramLLMHandler:
                 f"Use /debug on para ativar ou /debug off para desativar."
             )
             return
-        
+
         command = args[0].lower()
         if command == "on":
             self.debug_users[user_id] = True
@@ -243,6 +246,122 @@ class TelegramLLMHandler:
             await update.message.reply_text("🛠 Modo debug DESATIVADO! Logs suprimidos.")
         else:
             await update.message.reply_text("🛠 Uso: /debug on para ativar ou /debug off para desativar.")
+
+    async def handle_debug_context(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+        """Analisa e salva informações sobre o contexto atual enviado ao LLM"""
+        try:
+            user_id = update.effective_user.id
+            chat_id = update.effective_chat.id
+
+            # Mensagem opcional a ser usada como consulta
+            # (usa argumentos do comando ou "test query" como padrão)
+            query = " ".join(context.args) if context.args else "Esse é um teste de contexto. Por favor, analise meu contexto."
+
+            # Avisa o usuário que estamos processando
+            processing_msg = await update.message.reply_text("🔍 Analisando contexto...")
+
+            # 1. Pega contexto do MemoryManager (como no processo normal)
+            raw_ctx = await self.llm_agent.memory.get_context_messages(user_id, chat_id, query=query)
+
+            # 2. Formata para o provedor atual
+            messages = format_context_for_provider(
+                ctx_messages=raw_ctx,
+                provider=self.llm_agent._client.provider,
+                system_prompt=self.llm_agent.system_prompt,
+                user_message=query
+            )
+
+            # 3. Analisa os tokens
+            token_counts = []
+            total_tokens = 0
+
+            # Conta tokens por mensagem
+            for i, msg in enumerate(messages):
+                content = msg.get("content", "")
+                if not content and "parts" in msg:
+                    # Para o Gemini, extrai o conteúdo da estrutura "parts"
+                    parts = msg.get("parts", [])
+                    content = parts[0].get("text", "") if parts else ""
+
+                tokens = self.llm_agent.count_tokens(content)
+                total_tokens += tokens
+
+                role = msg.get("role", "unknown")
+                token_counts.append({
+                    "index": i,
+                    "role": role,
+                    "tokens": tokens,
+                    "content_preview": content[:100] + "..." if len(content) > 100 else content
+                })
+
+            # 4. Prepara resposta para o usuário
+            provider = self.llm_agent._client.provider
+            model = self.llm_agent._client.name
+
+            summary = f"📊 **Análise de Contexto** (Provedor: {provider}, Modelo: {model})\n\n"
+            summary += f"📋 **Total de mensagens**: {len(messages)}\n"
+            summary += f"🔢 **Total de tokens**: {total_tokens}\n\n"
+
+            # Adiciona detalhes por tipo de mensagem
+            system_count = sum(1 for m in messages if m.get("role") == "system")
+            user_count = sum(1 for m in messages if m.get("role") == "user" or m.get("role") == "human")
+            assistant_count = sum(1 for m in messages if m.get("role") == "assistant" or m.get("role") == "model")
+
+            summary += f"🤖 **Mensagens system**: {system_count}\n"
+            summary += f"👤 **Mensagens usuário**: {user_count}\n"
+            summary += f"💬 **Mensagens assistente**: {assistant_count}\n\n"
+
+            # 5. Salva o arquivo de debug
+            timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+            debug_dir = os.path.join("data", "debug")
+            os.makedirs(debug_dir, exist_ok=True)
+
+            debug_file = os.path.join(debug_dir, f"context_debug_{user_id}_{timestamp}.json")
+
+            debug_data = {
+                "metadata": {
+                    "user_id": user_id,
+                    "chat_id": chat_id,
+                    "timestamp": timestamp,
+                    "provider": provider,
+                    "model": model,
+                    "query": query
+                },
+                "stats": {
+                    "total_messages": len(messages),
+                    "total_tokens": total_tokens,
+                    "system_count": system_count,
+                    "user_count": user_count,
+                    "assistant_count": assistant_count
+                },
+                "token_analysis": token_counts,
+                "raw_context": [
+                    {"role": msg.get("role", "unknown"),
+                     "content": msg.get("content", "")
+                      if "content" in msg else (
+                        msg.get("parts", [{}])[0].get("text", "")
+                        if "parts" in msg and msg.get("parts") else ""
+                      )}
+                    for msg in messages
+                ],
+                "full_messages": messages
+            }
+
+            with open(debug_file, 'w', encoding='utf-8') as f:
+                json.dump(debug_data, f, ensure_ascii=False, indent=2)
+
+            # 6. Atualiza a resposta para o usuário
+            summary += f"📁 Arquivo de debug salvo em: `{debug_file}`\n\n"
+            summary += "❓ Para ver mais detalhes, analise o arquivo JSON que contém:\n"
+            summary += "- Contexto completo recuperado\n"
+            summary += "- Análise detalhada de tokens\n"
+            summary += "- Mensagens exatas enviadas ao LLM\n"
+
+            await processing_msg.edit_text(summary, parse_mode='Markdown')
+
+        except Exception as e:
+            logger.error(f"Erro ao analisar contexto: {e}", exc_info=True)
+            await update.message.reply_text(f"❌ Erro ao analisar contexto: {str(e)}")
     
     async def handle_logs(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         """Envia um resumo dos logs da sessão atual."""

@@ -84,8 +84,11 @@ A comunicação entre camadas segue regras estritas:
 
 ## Próximos Passos
 
-1. Implementar um sistema de cache de consultas frequentes
-2. Adicionar métricas de desempenho para operações de memória
-3. Criar um modo "economia de tokens" para reduzir custos de API
-4. Implementar compressão de contexto para mensagens longas
-5. Adicionar exportação/importação completa da memória
+1. Vetorização assíncrona: usar threads ou asyncio para processar vetorização paralelamente, evitando bloqueio do fluxo principal
+2. Implementar um sistema de cache de consultas frequentes
+3. Adicionar métricas de desempenho para operações de memória
+4. Criar um modo "economia de tokens" para reduzir custos de API
+5. Implementar compressão de contexto para mensagens longas
+6. Adicionar exportação/importação completa da memória
+7. Formatação Markdown compatível com Telegram: converter sintaxe markdown para o formato aceito pelo Telegram
+8. Feedback operacional detalhado: implementar logs de status e operação para clareza no processamento em tempo real

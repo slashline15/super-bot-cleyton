@@ -114,9 +114,12 @@ def main():
     
     # Handler para comando /lembrar
     application.add_handler(CommandHandler("lembrar", telegram_llm_handler.handle_lembrar))
-    
+
     # Handler para envio dos logs
     application.add_handler(CommandHandler("logs", telegram_llm_handler.handle_logs))
+
+    # Handler para debug de contexto
+    application.add_handler(CommandHandler("debug_context", telegram_llm_handler.handle_debug_context))
     
     # Handler para comando /cnpj
     registrar_cnpj_handlers(application)

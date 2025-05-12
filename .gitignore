@@ -80,3 +80,10 @@ tests/test_handle_memory.py
 *.bin
 
 data/usage/2025-05-11.json
+
+**/.claude/settings.local.json
+data/debug/context_debug_801350346_20250512_003722.json
+data/debug/context_debug_801350346_20250512_003859.json
+data/debug/context_debug_801350346_20250512_005509.json
+data/debug/context_debug_801350346_20250512_005515.json
+data/usage/2025-05-12.json

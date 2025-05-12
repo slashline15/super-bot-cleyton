@@ -43,21 +43,20 @@ def format_context_for_provider(ctx_messages, provider, system_prompt=None, user
     
     # Agora o system_prompt
     if provider == 'gemini':
-        # Gemini não tem role="system", então vamos injetar na primeira user message
+        # Gemini - não injetamos o prompt aqui porque o GeminiClient já faz isso
+        # Apenas adicionamos a mensagem do usuário se necessário
+        if user_message:
+            # Adiciona mensagem do usuário sem modificar
+            formatted.append({
+                "role": "user",
+                "parts": [{"text": user_message}]
+            })
+        # Convertemos role=system para o formato que o GeminiClient espera
         if system_prompt:
-            if user_message:
-                # Se tem mensagem do user, injeta o system nela
-                full_prompt = f"[SISTEMA] {system_prompt}\n\n{user_message}"
-                formatted.append({
-                    "role": "user",
-                    "parts": [{"text": full_prompt}]
-                })
-            else:
-                # Se não tem, cria uma
-                formatted.append({
-                    "role": "user",
-                    "parts": [{"text": f"[SISTEMA] {system_prompt}"}]
-                })
+            formatted.insert(0, {
+                "role": "system",
+                "content": system_prompt
+            })
     else:
         # OpenAI aceita system numa boa
         if system_prompt:

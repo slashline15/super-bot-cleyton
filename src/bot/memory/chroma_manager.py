@@ -32,8 +32,8 @@ def retry_on_exception(max_retries=3, retry_delay=0.5):
 
 class ChromaManager:
     """
-    Gerenciador de conexão com ChromaDB usando padrão Singleton.
-    
+    Gerenciador de conexão com ChromaDB usando padrão Singleton thread-safe.
+
     Esta classe garante que apenas uma conexão com o ChromaDB seja
     estabelecida por processo, economizando recursos e evitando
     problemas de concorrência.
@@ -41,39 +41,40 @@ class ChromaManager:
     _instance = None
     _client = None
     _lock = threading.Lock()
-    
+    _initialized = False  # Atributo de classe para controle real
+
     def __new__(cls, *args, **kwargs):
-        """Implementa o padrão Singleton."""
-        with cls._lock:
+        """Implementa o padrão Singleton thread-safe."""
+        with cls._lock:  # Protege toda a criação de instância
             if cls._instance is None:
-                cls._instance = super(ChromaManager, cls).__new__(cls)
-                cls._instance._initialized = False
+                cls._instance = super().__new__(cls)
             return cls._instance
-    
+
     def __init__(self, persist_directory="./data/chroma_db"):
         """
-        Inicializa o gerenciador do ChromaDB.
-        
+        Inicializa o gerenciador do ChromaDB de forma thread-safe.
+
         Args:
             persist_directory: Diretório para persistência dos dados
         """
-        # Evita reinicialização do Singleton
-        if self._initialized:
-            return
-            
-        self.persist_directory = persist_directory
-        
-        # Garante que o diretório existe
-        os.makedirs(Path(persist_directory), exist_ok=True)
-        
-        try:
-            self._client = self._connect_with_retry()
-            logger.info(f"ChromaDB inicializado em {persist_directory}")
-        except Exception as e:
-            logger.error(f"Falha ao inicializar ChromaDB: {e}")
-            raise
-            
-        self._initialized = True
+        with self._lock:  # Protege toda a inicialização
+            # Evita reinicialização do Singleton
+            if ChromaManager._initialized:
+                return
+
+            self.persist_directory = persist_directory
+
+            # Garante que o diretório existe
+            os.makedirs(Path(persist_directory), exist_ok=True)
+
+            try:
+                self._client = self._connect_with_retry()
+                logger.info(f"ChromaDB inicializado em {persist_directory}")
+            except Exception as e:
+                logger.error(f"Falha ao inicializar ChromaDB: {e}")
+                raise
+
+            ChromaManager._initialized = True
     
     @retry_on_exception(max_retries=3)
     def _connect_with_retry(self):

@@ -560,27 +560,19 @@ class MemoryManager:
         
         # Verificação simples de palavras-chave
         content_lower = content.lower()
-        
-        # Tenta usar o LLMAgent para categorização mais precisa
-        try:
-            from src.bot.agents.llm_agent import LLMAgent
-            agent = LLMAgent()
-            return await agent.categorize_text(content)
-        except Exception as e:
-            logger.debug(f"Falha ao usar LLM para categorização, usando método simples: {e}")
-            
-            # Se importante, aumenta a pontuação
-            if any(word in content_lower for word in keywords['importante']):
-                importance = 4
-                
-            # Busca categoria por palavras-chave
-            for category, words in keywords.items():
-                if category == 'importante':
-                    continue
-                if any(word in content_lower for word in words):
-                    return category, importance
-                    
-            return 'geral', importance
+
+        # Se importante, aumenta a pontuação
+        if any(word in content_lower for word in keywords['importante']):
+            importance = 4
+
+        # Busca categoria por palavras-chave
+        for category, words in keywords.items():
+            if category == 'importante':
+                continue
+            if any(word in content_lower for word in words):
+                return category, importance
+
+        return 'geral', importance
 
     async def get_context_messages(
         self, 

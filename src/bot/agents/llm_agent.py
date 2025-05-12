@@ -25,9 +25,7 @@ from src.bot.memory.memory_manager import MemoryManager
 from src.config.config import Config
 from src.bot.utils.config_manager import ConfigManager
 from src.bot.utils.token_tracker import TokenTracker
-from src.bot.handlers.telegram_llm_handler import ConfigManager
 from src.bot.memory.format_utils import format_context_for_provider
-import logging 
 
 
 logger = logging.getLogger("LLMAgent")
@@ -210,128 +208,16 @@ class LLMAgent:
         """Propriedade para compatibilidade com código legado."""
         return self._client.name
         
-    async def get_context_messages(self, user_id: int, chat_id: int, query: str = "") -> List[Dict[str, str]]:
-        """
-        Recupera contexto combinando mensagens recentes e semanticamente relevantes.
-        
-        Args:
-            user_id: ID do usuário
-            chat_id: ID do chat
-            query: Consulta atual para buscar contexto relevante
-        """
-        try:
-            # 1. Mensagens recentes (memória de curto prazo)
-            recent_messages = await self._fetch_recent_messages(
-                user_id, chat_id, Config.MAX_CONTEXT_MESSAGES // 2
-            )
-            
-            # 2. Busca semântica (se houver query)
-            semantic_messages = []
-            if query and len(query.strip()) > 0:
-                semantic_context = await self.memory.get_relevant_context(
-                    query=query,
-                    user_id=user_id,
-                    chat_id=chat_id,
-                    limit=Config.MAX_CONTEXT_MESSAGES // 2,
-                    time_window=365 * 24 * 60  # Um ano inteiro
-                )
-                
-                for msg in semantic_context:
-                    # Evita duplicações com mensagens recentes
-                    if not any(r['content'] == msg['content'] for r in recent_messages):
-                        semantic_messages.append({
-                            "role": msg['role'],
-                            "content": msg['content']
-                        })
-            
-            # 3. Mensagens importantes
-            important_messages = await self._fetch_important_messages(
-                user_id, chat_id, Config.MAX_CONTEXT_MESSAGES // 4
-            )
-            
-            # 4. Combina e filtra tudo
-            all_context = recent_messages + semantic_messages + important_messages
-            
-            # Filtra duplicatas e controla tokens
-            unique_messages = []
-            seen_contents = set()
-            total_tokens = 0
-            
-            for msg in all_context:
-                content_hash = hash(msg['content'])
-                if content_hash not in seen_contents:
-                    tokens = self.count_tokens(msg['content'])
-                    if total_tokens + tokens <= Config.MAX_TOKENS:
-                        unique_messages.append(msg)
-                        seen_contents.add(content_hash)
-                        total_tokens += tokens
-                    else:
-                        break
-            
-            logger.info(
-                f"Contexto recuperado: {len(unique_messages)} mensagens ("
-                f"{len(recent_messages)} recentes, {len(semantic_messages)} semânticas, "
-                f"{len(important_messages)} importantes)"
-            )
-            return unique_messages
-            
-        except Exception as e:
-            logger.error(f"Erro ao recuperar contexto: {e}", exc_info=True)
-            return []
-            
-    async def _fetch_recent_messages(self, user_id: int, chat_id: int, limit: int) -> List[Dict[str, str]]:
-        """Busca mensagens recentes do banco de dados."""
-        try:
-            with self.db.connect() as conn:
-                cursor = conn.cursor()
-                cursor.execute("""
-                    SELECT role, content 
-                    FROM messages 
-                    WHERE user_id = ? AND chat_id = ?
-                    ORDER BY timestamp DESC
-                    LIMIT ?
-                """, (user_id, chat_id, limit))
-                
-                rows = cursor.fetchall()
-                return [
-                    {"role": row[0], "content": row[1]} 
-                    for row in reversed(rows)
-                ]
-        except Exception as e:
-            logger.error(f"Erro ao buscar mensagens recentes: {e}")
-            return []
-            
-    async def _fetch_important_messages(self, user_id: int, chat_id: int, limit: int) -> List[Dict[str, str]]:
-        """Busca mensagens importantes com base no score de importância."""
-        try:
-            with self.db.connect() as conn:
-                cursor = conn.cursor()
-                cursor.execute("""
-                    SELECT role, content 
-                    FROM messages 
-                    WHERE user_id = ? AND chat_id = ? AND importance >= 4
-                    ORDER BY timestamp DESC
-                    LIMIT ?
-                """, (user_id, chat_id, limit))
-                
-                rows = cursor.fetchall()
-                return [
-                    {"role": row[0], "content": row[1]} 
-                    for row in rows
-                ]
-        except Exception as e:
-            logger.error(f"Erro ao buscar mensagens importantes: {e}")
-            return []
 
     async def process_message(self, text: str, user_id: int, chat_id: int) -> str:
         """Processa uma mensagem sem fazer cagada"""
         try:
             # 1. Adiciona mensagem do usuário
             await self.memory.add_message(user_id, chat_id, text, role="user")
-            
-            # 2. Pega contexto
-            raw_ctx = await self.get_context_messages(user_id, chat_id, query=text)
-            
+
+            # 2. Pega contexto do MemoryManager
+            raw_ctx = await self.memory.get_context_messages(user_id, chat_id, query=text)
+
             # 3. Formata pra quem quer que seja o provedor
             messages = format_context_for_provider(
                 ctx_messages=raw_ctx,
@@ -343,8 +229,8 @@ class LLMAgent:
             # 4. Chama a API (sem firula)
             response = await self._client.chat(messages)
             
-            # 5. Conta tokens (simplificado)
-            input_tokens = sum(self.count_tokens(str(m)) for m in messages)
+            # 5. Conta tokens (apenas o conteúdo real)
+            input_tokens = sum(self.count_tokens(m.get("content", "")) for m in messages)
             output_tokens = self.count_tokens(response)
             
             # 6. Registra uso
