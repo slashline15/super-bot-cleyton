@@ -1,132 +1,132 @@
 #-------------------------------------------------------#
 #                     TELEGRAM BOT                      #
 #-------------------------------------------------------#
-python-telegram-bot==21.10           # Bot Telegram com suporte a handlers, comandos, envio de mídia etc.
+# python-telegram-bot==21.10           # Bot Telegram com suporte a handlers, comandos, envio de mídia etc.
 
 #-------------------------------------------------------#
 #                     OPENAI API                        #
 #-------------------------------------------------------#
-openai==1.76.2                       # Cliente oficial da OpenAI (GPT-3.5, GPT-4)
-httpx==0.28.1                        # Cliente HTTP assíncrono, usado internamente pelo openai
-anyio==4.9.0                         # Backend assíncrono usado por httpx
-httpcore==1.0.9                      # Núcleo de conexões usado pelo httpx
-h11==0.16.0                          # Protocolo HTTP/1.1 (base do httpcore)
-tqdm==4.67.1                         # Barra de progresso (opcional, mas usada em streamings longos)
-certifi==2025.4.26                   # Certificados SSL atualizados
-sniffio==1.3.1                       # Detecção de ambiente async
-idna==3.10                           # Codificação de domínios internacionais (ex: IDN)
+# openai==1.76.2                       # Cliente oficial da OpenAI (GPT-3.5, GPT-4)
+# httpx==0.28.1                        # Cliente HTTP assíncrono, usado internamente pelo openai
+# anyio==4.9.0                         # Backend assíncrono usado por httpx
+# httpcore==1.0.9                      # Núcleo de conexões usado pelo httpx
+# h11==0.16.0                          # Protocolo HTTP/1.1 (base do httpcore)
+# tqdm==4.67.1                         # Barra de progresso (opcional, mas usada em streamings longos)
+# certifi==2025.4.26                   # Certificados SSL atualizados
+# sniffio==1.3.1                       # Detecção de ambiente async
+# idna==3.10                           # Codificação de domínios internacionais (ex: IDN)
 
 #-------------------------------------------------------#
 #                   GOOGLE GEMINI API                   #
 #-------------------------------------------------------#
-google-generativeai==0.8.5               # Cliente oficial para usar o Gemini (textos, embeddings)
-google-ai-generativelanguage==0.6.15     # Lib do modelo Gemini (usada internamente)
-google-api-core==2.25.0rc0               # Núcleo da API do Google (timeout, retries, gRPC)
-proto-plus==1.26.1                       # Wrapper de protocolo protobuf
-grpcio==1.71.0                           # Framework de comunicação binária (gRPC)
-grpcio-status==1.71.0                    # Status codes do gRPC
-google-auth==2.39.0                      # Autenticação com serviços Google
-googleapis-common-protos==1.70.0         # Protótipos comuns usados por várias APIs Google
-rsa==4.9.1                               # Criptografia para autenticação
-pyasn1==0.6.1                            # ASN.1 usado em tokens de segurança
-pyasn1_modules==0.4.2                    # Módulos extras para ASN.1
+# google-generativeai==0.8.5               # Cliente oficial para usar o Gemini (textos, embeddings)
+# google-ai-generativelanguage==0.6.15     # Lib do modelo Gemini (usada internamente)
+# google-api-core==2.25.0rc0               # Núcleo da API do Google (timeout, retries, gRPC)
+# proto-plus==1.26.1                       # Wrapper de protocolo protobuf
+# grpcio==1.71.0                           # Framework de comunicação binária (gRPC)
+# grpcio-status==1.71.0                    # Status codes do gRPC
+# google-auth==2.39.0                      # Autenticação com serviços Google
+# googleapis-common-protos==1.70.0         # Protótipos comuns usados por várias APIs Google
+# rsa==4.9.1                               # Criptografia para autenticação
+# pyasn1==0.6.1                            # ASN.1 usado em tokens de segurança
+# pyasn1_modules==0.4.2                    # Módulos extras para ASN.1
 
 #-------------------------------------------------------#
 #                     CHROMA DB                         #
 #-------------------------------------------------------#
-chromadb==1.0.7                      # Banco vetorial com suporte a persistência local
-chroma-hnswlib==0.7.6                # Indexador HNSW (busca vetorial eficiente)
-click==8.1.8                         # CLI utilizada internamente no chromadb
-orjson==3.10.18                      # JSON ultra rápido (usado na serialização de vetores)
-PyPika==0.48.9                       # DSL para SQL (interno ao Chroma)
-attrs==25.3.0                        # Validação e estruturação de objetos
-overrides==7.7.0                     # Utilitário para declarar override de métodos
-python-dateutil==2.9.0.post0        # Manipulação de datas (timestamps, formatação)
-tenacity==9.1.2                      # Retry automático (ex: reconectar banco vetorial)
-filelock==3.18.0                    # Controle de acesso concorrente a arquivos
-fsspec==2025.3.2                    # Interface genérica para arquivos (local, remoto etc.)
-durationpy==0.9                     # Manipulação de strings de duração (ex: "1h30m")
+# chromadb==1.0.7                      # Banco vetorial com suporte a persistência local
+# chroma-hnswlib==0.7.6                # Indexador HNSW (busca vetorial eficiente)
+# click==8.1.8                         # CLI utilizada internamente no chromadb
+# orjson==3.10.18                      # JSON ultra rápido (usado na serialização de vetores)
+# PyPika==0.48.9                       # DSL para SQL (interno ao Chroma)
+# attrs==25.3.0                        # Validação e estruturação de objetos
+# overrides==7.7.0                     # Utilitário para declarar override de métodos
+# python-dateutil==2.9.0.post0        # Manipulação de datas (timestamps, formatação)
+# tenacity==9.1.2                      # Retry automático (ex: reconectar banco vetorial)
+# filelock==3.18.0                    # Controle de acesso concorrente a arquivos
+# fsspec==2025.3.2                    # Interface genérica para arquivos (local, remoto etc.)
+# durationpy==0.9                     # Manipulação de strings de duração (ex: "1h30m")
 
 #-------------------------------------------------------#
 #                        FASTAPI                        #
 #-------------------------------------------------------#
-fastapi==0.115.9                    # Framework web leve e rápido para APIs (usado localmente)
-uvicorn==0.34.2                     # Servidor ASGI (roda o FastAPI)
-starlette==0.45.3                   # Base do FastAPI (roteamento, middlewares)
-python-dotenv==1.0.1                # Carrega variáveis de ambiente do .env
+# fastapi==0.115.9                    # Framework web leve e rápido para APIs (usado localmente)
+# uvicorn==0.34.2                     # Servidor ASGI (roda o FastAPI)
+# starlette==0.45.3                   # Base do FastAPI (roteamento, middlewares)
+# python-dotenv==1.0.1                # Carrega variáveis de ambiente do .env
 
 #-------------------------------------------------------#
 #                  BASE / SUPORTE GERAL                 #
 #-------------------------------------------------------#
-pydantic==2.10.6                    # Validação de dados e criação de modelos
-pydantic_core==2.27.2               # Núcleo de alto desempenho para o pydantic
-typing_extensions==4.13.2           # Suporte a tipos mais avançados (usado em diversos pacotes)
-annotated-types==0.7.0              # Tipagem estendida compatível com Pydantic 2
-distro==1.9.0                       # Detecção do sistema operacional
-colorama==0.4.6                     # Cores no terminal (logs)
-six==1.17.0                         # Compatibilidade Python 2 e 3 (usado por dependências)
-zipp==3.21.0                        # Manipulação de arquivos zip (usado por importlib)
-importlib_resources==6.5.2          # Carregamento de recursos (substitui pkg_resources)
-importlib_metadata==8.6.1           # Lê metadados de pacotes Python
-jsonschema==4.23.0                  # Validação de schemas JSON
-jsonschema-specifications==2025.4.1 # Especificações usadas pelo jsonschema
-referencing==0.36.2                 # Resolve referências dentro de schemas JSON
-rpds-py==0.24.0                     # Dependência de performance usada no jsonschema
-packaging==25.0                     # Manipulação de versões, ranges etc.
-PyYAML==6.0.2                       # Leitura de arquivos YAML
-tomli==2.2.1                        # Leitura de arquivos TOML
+# pydantic==2.10.6                    # Validação de dados e criação de modelos
+# pydantic_core==2.27.2               # Núcleo de alto desempenho para o pydantic
+# typing_extensions==4.13.2           # Suporte a tipos mais avançados (usado em diversos pacotes)
+# annotated-types==0.7.0              # Tipagem estendida compatível com Pydantic 2
+# distro==1.9.0                       # Detecção do sistema operacional
+# colorama==0.4.6                     # Cores no terminal (logs)
+# six==1.17.0                         # Compatibilidade Python 2 e 3 (usado por dependências)
+# zipp==3.21.0                        # Manipulação de arquivos zip (usado por importlib)
+# importlib_resources==6.5.2          # Carregamento de recursos (substitui pkg_resources)
+# importlib_metadata==8.6.1           # Lê metadados de pacotes Python
+# jsonschema==4.23.0                  # Validação de schemas JSON
+# jsonschema-specifications==2025.4.1 # Especificações usadas pelo jsonschema
+# referencing==0.36.2                 # Resolve referências dentro de schemas JSON
+# rpds-py==0.24.0                     # Dependência de performance usada no jsonschema
+# packaging==25.0                     # Manipulação de versões, ranges etc.
+# PyYAML==6.0.2                       # Leitura de arquivos YAML
+# tomli==2.2.1                        # Leitura de arquivos TOML
 
 #-------------------------------------------------------#
 #      PEDIU PARA INSTALAR, MAS NÃO É NECESSÁRIO        #
 #      (Dependências transitivas ou ferramentas dev)    #
 #-------------------------------------------------------#
-asgiref==3.8.1
-backoff==2.2.1
-bcrypt==4.3.0
-cachetools==5.5.2
-cffi==1.17.1
-charset-normalizer==3.4.1
-coloredlogs==15.0.1
-cryptography==44.0.2
-Deprecated==1.2.18
-exceptiongroup==1.2.2
-flatbuffers==25.2.10
-google-api-python-client==2.169.0
-google-auth-httplib2==0.2.0
-google-auth-oauthlib==1.2.2
-httplib2==0.22.0
-httptools==0.6.4
-huggingface-hub==0.30.2
-humanfriendly==10.0
-jiter==0.9.0
-markdown-it-py==3.0.0
-mdurl==0.1.2
-mmh3==5.1.0
-mpmath==1.3.0
-numpy==2.2.5
-oauthlib==3.2.2
-onnxruntime==1.21.1
-opentelemetry-api==1.32.1
-opentelemetry-exporter-otlp-proto-common==1.32.1
-opentelemetry-exporter-otlp-proto-grpc==1.32.1
-opentelemetry-proto==1.32.1
-opentelemetry-sdk==1.32.1
-opentelemetry-semantic-conventions==0.53b1
-pipdeptree==2.26.1
-posthog==4.0.1
-protobuf==5.29.4
-pycparser==2.22
-pyparsing==3.2.3
-pyreadline3==3.5.4 # Específico para Windows, interatividade no console
-regex==2024.11.6
-requests==2.32.3
-requests-oauthlib==2.0.0
-sympy==1.14.0
-tiktoken==0.8.0
-tokenizers==0.21.1
-uritemplate==4.1.1
-urllib3==2.4.0
-wrapt==1.17.2
+# asgiref==3.8.1
+# backoff==2.2.1
+# bcrypt==4.3.0
+# cachetools==5.5.2
+# cffi==1.17.1
+# charset-normalizer==3.4.1
+# coloredlogs==15.0.1
+# cryptography==44.0.2
+# Deprecated==1.2.18
+# exceptiongroup==1.2.2
+# flatbuffers==25.2.10
+# google-api-python-client==2.169.0
+# google-auth-httplib2==0.2.0
+# google-auth-oauthlib==1.2.2
+# httplib2==0.22.0
+# httptools==0.6.4
+# huggingface-hub==0.30.2
+# humanfriendly==10.0
+# jiter==0.9.0
+# markdown-it-py==3.0.0
+# mdurl==0.1.2
+# mmh3==5.1.0
+# mpmath==1.3.0
+# numpy==2.2.5
+# oauthlib==3.2.2
+# onnxruntime==1.21.1
+# opentelemetry-api==1.32.1
+# opentelemetry-exporter-otlp-proto-common==1.32.1
+# opentelemetry-exporter-otlp-proto-grpc==1.32.1
+# opentelemetry-proto==1.32.1
+# opentelemetry-sdk==1.32.1
+# opentelemetry-semantic-conventions==0.53b1
+# pipdeptree==2.26.1
+# posthog==4.0.1
+# protobuf==5.29.4
+# pycparser==2.22
+# pyparsing==3.2.3
+# pyreadline3==3.5.4 # Específico para Windows, interatividade no console
+# regex==2024.11.6
+# requests==2.32.3
+# requests-oauthlib==2.0.0
+# sympy==1.14.0
+# tiktoken==0.8.0
+# tokenizers==0.21.1
+# uritemplate==4.1.1
+# urllib3==2.4.0
+# wrapt==1.17.2
 
 #-------------------------------------------------------#
 #                     PIPDEPTREE                        #
